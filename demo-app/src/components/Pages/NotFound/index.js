@@ -17,7 +17,7 @@ const NotFound = () => {
           Oops!
         </h1>
       </div>
-      <h2 style={{ color: "white" }}>404 - Page not found</h2>
+      <h2 style={{ color: "white" }}>TORONTOTIRTA</h2>
       <p style={{ color: "white" }}>
         {/* The page you are looking for might have been removed had its name
         changed or is temporarily unavailable. */}
