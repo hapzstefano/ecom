@@ -9,6 +9,7 @@ import "./App.css";
 
 //pages
 import NotFound from "./components/Pages/NotFound";
+
 function App() {
   return (
     <Router>

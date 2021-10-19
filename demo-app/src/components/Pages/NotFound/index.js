@@ -1,27 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "./notfound.css";
 
 const NotFound = () => {
+  useEffect(() => {
+    document.title = "404 Not Found";
+  }, []);
   return (
-    <div
-      className="not-found"
-      style={{ backgroundImage: "url('/assets/images/global/drTirta.png')" }}
-    >
+    <div className="not-found">
       <div className="not-found-404">
         <h1
           style={{
-            backgroundImage: "url('/assets/images/global/not_found.jpg')",
+            backgroundColor: "#81d2eb",
           }}
         >
           Oops!
         </h1>
       </div>
-      <h2 style={{ color: "white" }}>TORONTOTIRTA</h2>
-      <p style={{ color: "white" }}>
-        {/* The page you are looking for might have been removed had its name
-        changed or is temporarily unavailable. */}
-        SIANG MENANGANI COVID MALAM BERGERAK DI MID
+      <h2>Oops!</h2>
+      <p>
+        The page you are looking for might have been removed had its name
+        changed or is temporarily unavailable.
       </p>
     </div>
   );
