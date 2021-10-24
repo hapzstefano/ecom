@@ -22,10 +22,18 @@ function App() {
           <Home />
         </Route>
         <Route exact path="/login">
+          <Navbar />
           <SignIn />
         </Route>
         <Route exact path="/register">
+          <Navbar />
           <SignUp />
+        </Route>
+        <Route exact path="/home">
+          <Redirect to="/" />
+        </Route>
+        <Route exact path="/logout">
+          <Redirect to="/" />
         </Route>
         <Route path="*">
           <Navbar />

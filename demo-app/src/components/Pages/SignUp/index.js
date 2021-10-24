@@ -11,7 +11,9 @@ const SignUp = () => {
   const [conpass, setConpass] = useState("");
   const [address, setAddress] = useState("");
   const [phonenum, setPhonenum] = useState("");
-
+  useEffect(() => {
+    document.title = "Register";
+  }, []);
   const handleSignUp = (e) => {
     console.log(email);
   };

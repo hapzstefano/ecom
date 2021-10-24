@@ -11,7 +11,9 @@ const SignIn = () => {
     `${process.env.REACT_APP_LOCAL_STORAGE_SECRET_KEY}`
   );
   const history = useHistory();
-
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
   const handleSignIn = (event) => {
     const formData = new FormData(event.currentTarget);
     event.preventDefault();
@@ -61,7 +63,7 @@ const SignIn = () => {
             </label>
           </div>
 
-          <ButtonRipple type="submit" text="Sign Up" />
+          <ButtonRipple type="submit" text="Sign In" />
         </form>
         <p className="asterisk">
           &#42; By logging in, you agree to our Terms of Use and to receive our
