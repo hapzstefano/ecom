@@ -1,0 +1,34 @@
+.container-signin {
+  min-height: 100vh; /* butuh calc ketika navbar selesai */
+  display: flex;
+  align-items: center;
+}
+.content-signin {
+  border: 1px solid lightgray;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 400px;
+  border-radius: 5px;
+  margin: auto;
+  padding: 1.2em;
+  text-align: center;
+}
+.content-signin form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+}
+.content-signin h2 {
+  padding-top: 1em;
+  color: white;
+}
+p.asterisk {
+  font-size: 0.8em;
+  text-align: justify;
+  color: white;
+}
+@media screen and (max-width: 900px), screen and (max-height: 450px) {
+  .content-signin {
+    width: 250px;
+  }
+}

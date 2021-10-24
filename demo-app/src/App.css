@@ -119,6 +119,7 @@ h6,
 .form-input label > span {
   background-color: white;
   font-size: 0.8rem;
+  background-color: transparent;
   left: 0.8rem;
   position: absolute;
   text-transform: capitalize;
@@ -126,7 +127,7 @@ h6,
 }
 
 .form-input input {
-  border: 1px solid lightgray;
+  border: 1.5px solid lightgray;
   border-radius: 5px;
   flex: 1 1 auto;
   margin: 1.2rem 0;
@@ -148,20 +149,19 @@ h6,
   font-size: 0.65rem;
   transform: translate(-8px, -21px);
 }
-
 .form-input input:focus:not(.form-input-error) {
-  border-color: dodgerblue;
+  border-color: #a9e4d7;
 }
 
 .form-input input:focus:not(.form-input-error) + label > span {
-  color: dodgerblue;
+  color: #a9e4d7;
 }
 
 .form-input input:focus + label > span,
 .form-input input.not-empty + label > span,
 .form-input input.form-input-error + label > span {
   font-size: 0.65rem;
-  transform: translate(-8px, -21px);
+  transform: translate(-8px, -25.5px);
 }
 
 .form-input input.form-input-error,
