@@ -36,8 +36,8 @@ const Navbar = () => {
 
   useEffect(() => {
     if (location.pathname === "/") {
-      window.addEventListener("scroll", handleScroll);
-      handleScroll();
+      //window.addEventListener("scroll", handleScroll);
+      //handleScroll();
     } else {
       $("nav").addClass("scrolled");
     }

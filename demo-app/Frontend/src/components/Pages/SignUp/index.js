@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { EncryptStorage } from "encrypt-storage";
-import $ from "jquery";
+import { encryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
 import ButtonRipple from "../../ButtonRipple";
 import "./signup.css";
@@ -18,22 +17,22 @@ const SignUp = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     axios
-        .get(`http://localhost:3001/register`, {
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          //error
-          if (err.response) {
-            console.log("res error", err.response.data);
-          } else if (err.request) {
-            console.log("req error", err.request.data);
-          } else {
-            console.log("Error", err.message);
-          }
-        });
+      .get(`http://localhost:3001/register`, {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
   };
   return (
     <div

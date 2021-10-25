@@ -19,6 +19,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
+          <Navbar />
           <Home />
         </Route>
         <Route exact path="/login">

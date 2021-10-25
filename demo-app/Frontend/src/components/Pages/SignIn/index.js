@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { EncryptStorage } from "encrypt-storage";
-import $ from "jquery";
 import { useHistory } from "react-router-dom";
 import ButtonRipple from "../../ButtonRipple";
 import "./signin.css";

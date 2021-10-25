@@ -67,7 +67,7 @@ nav > .nav-items > ul > li.logo img {
 
 nav > .nav-items > ul > li:not(.logo) > a {
   margin: 0 0.5rem;
-  padding: 0.5em 1em;
+  padding: 1.1em 1em;
 }
 
 nav > .nav-items > ul > li > a {
@@ -83,7 +83,7 @@ nav > .nav-items > ul > li > a::before {
   background-color: white;
   bottom: 0;
   content: "";
-  height: 1px;
+  height: 3px;
   left: 10%;
   position: absolute;
   right: 10%;
