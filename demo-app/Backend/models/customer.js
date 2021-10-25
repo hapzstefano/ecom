@@ -8,7 +8,10 @@ const mongoose = require('mongoose');
     password: {type: String, required: true},
     alamat: {type: String, required: true},
     status: {type: Number, required: true},
-    id_jenis_member: {type: Number}
+    member: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "jenisMember"
+      }
 })
 
 module.exports = mongoose.model('customer', customerSchema)
