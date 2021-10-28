@@ -35,13 +35,7 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    if (location.pathname === "/") {
-      //window.addEventListener("scroll", handleScroll);
-      //handleScroll();
-    } else {
-      $("nav").addClass("scrolled");
-    }
-
+    $("nav").addClass("scrolled");
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -101,6 +95,7 @@ const Navbar = () => {
               </li>
             )
           )}
+          {/*INI UNTUK NAVBAR ADMIN */}
           {!encryptStorage.getItem("admin_logged_in") && (
             <>
               <li>
