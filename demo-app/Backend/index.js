@@ -7,6 +7,9 @@ mongoose.connect('mongodb+srv://user:user@cluster0.cna0d.mongodb.net/proyek_ecom
     .then(() => console.log('MongoDB connected…'))
     .catch(err => console.log(err))
 
+require('./models/customer')
+require('./models/jenis_member')
+
 app.use(express.urlencoded({
     extended: true
 }));
