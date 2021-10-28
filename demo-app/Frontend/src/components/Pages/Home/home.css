@@ -1,0 +1,21 @@
+.container-home {
+  position: relative;
+}
+.swiper-slide img {
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  min-height: 50vh;
+  max-height: 100vh;
+}
+.swiper-pagination-bullet {
+  background-color: lightgray !important;
+  opacity: 1;
+}
+.swiper-button-prev {
+  color: #f3f0d7 !important;
+}
+.swiper-button-next {
+  color: #f3f0d7 !important;
+}
