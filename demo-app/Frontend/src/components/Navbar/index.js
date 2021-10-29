@@ -50,7 +50,8 @@ const Navbar = () => {
         </div>
       </div>
       <div className="logo-mobile">
-        {encryptStorage.getItem("admin_logged_in") ? (
+        {encryptStorage.getItem("admin_logged_in") ||
+        encryptStorage.getItem("manager_logged_in") ? (
           <img src="/assets/images/logo.svg" alt="logo" />
         ) : (
           <NavLink exact to="/">
@@ -61,7 +62,8 @@ const Navbar = () => {
       <div className="nav-items">
         <ul className="navbar-item-left">
           <li className="logo">
-            {encryptStorage.getItem("admin_logged_in") ? (
+            {encryptStorage.getItem("admin_logged_in") ||
+            encryptStorage.getItem("manager_logged_in") ? (
               <img src="/assets/images/logo.svg" alt="logo" />
             ) : (
               <NavLink exact to="/">
@@ -69,43 +71,124 @@ const Navbar = () => {
               </NavLink>
             )}
           </li>
-          {!encryptStorage.getItem("admin_logged_in") && (
-            <li>
-              <NavLink exact to="/" activeClassName="navbar-active">
-                home
-              </NavLink>
-            </li>
-          )}
-          {encryptStorage.getItem("user_logged_in") ? (
-            <li>
-              <NavLink exact to="/dashboard" activeClassName="navbar-active">
-                dashboard
-              </NavLink>
-            </li>
-          ) : (
-            encryptStorage.getItem("admin_logged_in") && (
+
+          {/*INI UNTUK NAVBAR ADMIN */}
+          {encryptStorage.getItem("admin_logged_in") ? (
+            <>
+              <ul className="navbar-user-control">
+                <li
+                  style={{
+                    listStyle: "none",
+                    minWidth: "auto",
+                    paddingLeft: "2em",
+                  }}
+                >
+                  <span>Masters</span>
+                  <ul>
+                    <li>
+                      <NavLink
+                        exact
+                        to="/masterbrand"
+                        activeClassName="navbar-active"
+                        className="navlink-left"
+                      >
+                        master brand
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        exact
+                        to="/mastercategory"
+                        activeClassName="navbar-active"
+                        className="navlink-left"
+                      >
+                        master category
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        exact
+                        to="/mastermember"
+                        activeClassName="navbar-active"
+                        className="navlink-left"
+                      >
+                        master member
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        exact
+                        to="/masterpromo"
+                        activeClassName="navbar-active"
+                        className="navlink-left"
+                      >
+                        master promo
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        exact
+                        to="/masterstock"
+                        activeClassName="navbar-active"
+                        className="navlink-left"
+                      >
+                        master stock
+                      </NavLink>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+
               <li>
                 <NavLink
                   exact
-                  to="/admindashboard"
+                  to="/confirmorder"
                   activeClassName="navbar-active"
                 >
-                  dashboard
+                  confirm order
                 </NavLink>
               </li>
-            )
-          )}
-          {/*INI UNTUK NAVBAR ADMIN */}
-          {!encryptStorage.getItem("admin_logged_in") && (
+            </>
+          ) : encryptStorage.getItem("manager_logged_in") ? (
             <>
               <li>
-                <NavLink exact to="/themelist" activeClassName="navbar-active">
-                  templates
+                <NavLink
+                  exact
+                  to="/masteremployee"
+                  activeClassName="navbar-active"
+                >
+                  employee
                 </NavLink>
               </li>
               <li>
                 <NavLink exact to="/pricing" activeClassName="navbar-active">
-                  pricing
+                  report
+                </NavLink>
+              </li>
+            </>
+          ) : encryptStorage.getItem("manager_logged_in") ? (
+            <>
+              <li>
+                <NavLink exact to="/profile" activeClassName="navbar-active">
+                  profile
+                </NavLink>
+              </li>
+              <li>
+                <NavLink exact to="/pricing" activeClassName="navbar-active">
+                  report
+                </NavLink>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <NavLink exact to="/home" activeClassName="navbar-active">
+                  home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink exact to="/home" activeClassName="navbar-active">
+                  shop now
                 </NavLink>
               </li>
             </>
@@ -159,11 +242,29 @@ const Navbar = () => {
               </ul>
             </li>
           </ul>
+        ) : encryptStorage.getItem("manager_logged_in") ? (
+          <ul className="navbar-user-control">
+            <li>
+              <span>Hello, manager</span>
+              <ul>
+                <li>
+                  <NavLink
+                    exact
+                    to="/logout"
+                    activeClassName="navbar-active"
+                    onClick={() => handleClickLogout()}
+                  >
+                    logout
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
+          </ul>
         ) : (
           <ul className="navbar-item-right">
             <li>
               <NavLink exact to="/register" activeClassName="navbar-active">
-                sign in
+                sign up
               </NavLink>
             </li>
             <li>
@@ -173,7 +274,7 @@ const Navbar = () => {
                 activeClassName="navbar-active"
                 className="navbar-button"
               >
-                sign up
+                sign in
               </NavLink>
             </li>
           </ul>

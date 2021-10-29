@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import $ from "jquery";
 import { EncryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
 import ButtonRipple from "../../ButtonRipple";
@@ -11,22 +12,39 @@ const SignIn = () => {
   );
   const history = useHistory();
   useEffect(() => {
+    $("input").each(function () {
+      if ($(this).val().length > 0) {
+        $(this).addClass("not-empty");
+      } else {
+        $(this).removeClass("not-empty");
+      }
+
+      $(this).on("change", function () {
+        if ($(this).val().length > 0) {
+          $(this).addClass("not-empty");
+        } else {
+          $(this).removeClass("not-empty");
+        }
+      });
+    });
     document.title = "Login";
   }, []);
   const handleSignIn = (event) => {
     const formData = new FormData(event.currentTarget);
     event.preventDefault();
-    if (email === "admin" && password === "admin") {
+    //DISINI PENGECEKAN EMAIL PASSWORD DR API
+    if (email === "manager@123" && password === "manager") {
+      encryptStorage.setItem("manager_logged_in", true);
+    } else if (email === "admin@123" && password === "admin") {
       encryptStorage.setItem("admin_logged_in", true);
     } else {
-      //DISINI PENGECEKAN EMAIL PASSWORD DR API
       encryptStorage.setItem("user_logged_in", true);
     }
     history.push("/");
   };
   return (
     <div
-      className="container-signup"
+      className="container-signin"
       style={{
         backgroundImage: "url('/assets/images/global/signup.jpg')",
         backgroundPosition: "center",
@@ -34,7 +52,7 @@ const SignIn = () => {
         backgroundSize: "cover",
       }}
     >
-      <div className="content-signup">
+      <div className="content-signin">
         <h2>Sign In</h2>
         <form onSubmit={(e) => handleSignIn(e)}>
           <div className="form-input">
