@@ -1,3 +1,6 @@
+body {
+  visibility: hidden;
+}
 .container-home {
   position: relative;
 }
@@ -45,6 +48,7 @@
   transition: all 0.3s ease-in-out;
   object-fit: cover;
   object-position: center;
+  transform: scale(0.75);
 }
 
 .content-img-anim.animate {
@@ -64,9 +68,122 @@
   align-items: center;
   justify-content: center;
 }
-
+.react-parallax {
+  margin-top: 0em !important;
+}
 .overview-title h1 {
   text-align: center;
-  margin: 1em 0 1em 0 !important;
+  margin: 0.5em 0 0.5em 0 !important;
   font-size: 3em;
+  -webkit-animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.61, 0.355, 1)
+    0.5s both;
+  animation: tracking-in-expand 0.7s cubic-bezier(0.215, 0.61, 0.355, 1) 0.5s
+    both;
+}
+.parallax-container {
+  height: 70vh;
+}
+.react-parallax-content {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+.parallax-icon {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10em;
+}
+.parallax-first,
+.parallax-second,
+.parallax-third,
+.parallax-fourth {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+.parallax-title {
+  color: white;
+  font-size: 1.2em;
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+.tilt-popular {
+  transform-style: preserve-3d;
+}
+.popular-item-container {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.popuplar-item-wrapper {
+  height: 350px;
+  transform: perspective(500px);
+  transform-style: preserve-3d;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+.popular-img {
+  height: 200px;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+.popular-title {
+  text-align: center;
+  margin: 0.5em 0 0.5em 0 !important;
+  font-size: 2em;
+}
+.popular-item-name {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.custom-button {
+  width: 100%;
+}
+@media screen and (max-width: 900px), screen and (max-height: 410px) {
+  .content-img-anim {
+    transform: scale(0.6);
+    width: 100%;
+  }
+  .parallax-icon {
+    gap: 3em;
+  }
+}
+
+@-webkit-keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
 }

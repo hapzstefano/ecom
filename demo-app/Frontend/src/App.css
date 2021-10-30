@@ -42,7 +42,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
-  --navbar-height: 50px;
+  --navbar-height: 70.375px;
   --sidebar-width: 275px;
 }
 
@@ -177,4 +177,36 @@ h6,
   left: 0;
   position: absolute;
   text-transform: capitalize;
+}
+.custom-button {
+  position: relative;
+  min-height: 5vh;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1em;
+  text-decoration: none;
+  overflow: hidden;
+  outline: none;
+  border: none;
+  background-color: #303030;
+  color: lightgray;
+}
+.custom-button span {
+  position: absolute;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+  animation: haphapanimate 500ms linear infinite;
+}
+@keyframes haphapanimate {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 0.5;
+  }
+  100% {
+    width: 500px;
+    height: 500px;
+    opacity: 0;
+  }
 }
