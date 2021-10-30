@@ -4,7 +4,9 @@ li {
   margin: 0;
   padding: 0;
 }
-
+.navbar-margin {
+  padding-top: 50px;
+}
 nav {
   font-size: 0.85rem;
   position: fixed;
@@ -166,6 +168,13 @@ nav > .nav-items > ul > li > ul > li > a {
   padding: 0.5rem;
   text-decoration: none;
   width: 100%;
+}
+
+.navlink-left {
+  text-decoration: none;
+  color: #000;
+  text-transform: capitalize;
+  font-size: 1.1em;
 }
 
 @media screen and (max-width: 900px), screen and (max-height: 450px) {

@@ -1,5 +1,5 @@
 .container-signin {
-  min-height: 100vh; /* butuh calc ketika navbar selesai */
+  min-height: calc(100vh - var(--navbar-height));
   display: flex;
   align-items: center;
 }
@@ -27,8 +27,12 @@ p.asterisk {
   text-align: justify;
   color: white;
 }
-@media screen and (max-width: 900px), screen and (max-height: 450px) {
+@media screen and (max-width: 900px), screen and (max-height: 750px) {
+  .container-signin {
+    min-height: calc(80vh - var(--navbar-height));
+  }
   .content-signin {
     width: 250px;
+    margin-top: 4em;
   }
 }

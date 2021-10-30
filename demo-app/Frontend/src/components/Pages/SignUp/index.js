@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import $ from "jquery";
 import axios from "axios";
 import { encryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
@@ -12,6 +13,21 @@ const SignUp = () => {
   const [address, setAddress] = useState("");
   const [phonenum, setPhonenum] = useState("");
   useEffect(() => {
+    $("input").each(function () {
+      if ($(this).val().length > 0) {
+        $(this).addClass("not-empty");
+      } else {
+        $(this).removeClass("not-empty");
+      }
+
+      $(this).on("change", function () {
+        if ($(this).val().length > 0) {
+          $(this).addClass("not-empty");
+        } else {
+          $(this).removeClass("not-empty");
+        }
+      });
+    });
     document.title = "Register";
   }, []);
   const handleSignUp = (e) => {
