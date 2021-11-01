@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
     poin: {type: Number, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
+    notlp: {type: String, required: true},
     alamat: {type: String, required: true},
     status: {type: Number, required: true},
     member: {

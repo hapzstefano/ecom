@@ -13,6 +13,7 @@ require('./models/jenis_member')
 app.use(express.urlencoded({
     extended: true
 }));
+app.use(express.json());
 
 const routes = require('./routes/route')
 app.use("/",routes);

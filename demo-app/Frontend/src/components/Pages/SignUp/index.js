@@ -33,7 +33,13 @@ const SignUp = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     axios
-      .get(`http://localhost:3001/register`, {
+      .post(`http://localhost:3001/register`,{
+        email:email,
+        nama:name,
+        password:password,
+        confirm:conpass,
+        address:address,
+        phonenum:phonenum,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {

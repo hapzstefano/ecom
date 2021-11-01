@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
+import axios from "axios";
 import { EncryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
 import ButtonRipple from "../../ButtonRipple";
@@ -32,6 +33,25 @@ const SignIn = () => {
   const handleSignIn = (event) => {
     const formData = new FormData(event.currentTarget);
     event.preventDefault();
+    axios
+      .post(`http://localhost:3001/login`,{
+        email:email,
+        password:password,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
     //DISINI PENGECEKAN EMAIL PASSWORD DR API
     if (email === "manager@123" && password === "manager") {
       encryptStorage.setItem("manager_logged_in", true);
