@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import $ from "jquery";
 import { EncryptStorage } from "encrypt-storage";
 import { NavLink, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fas, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 //css
 import "./navbar.css";
@@ -182,7 +184,7 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <NavLink exact to="/home" activeClassName="navbar-active">
+                <NavLink exact to="/" activeClassName="navbar-active">
                   home
                 </NavLink>
               </li>
@@ -194,7 +196,27 @@ const Navbar = () => {
             </>
           )}
         </ul>
-        <ul className="navbar-item-middle"></ul>
+        <ul className="navbar-item-middle">
+          <li>
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Search Here"
+                className="search-nav"
+              />
+              <FontAwesomeIcon
+                icon={faSearch}
+                style={{
+                  fontSize: "1.2em",
+                  color: "white",
+                  marginLeft: "1em",
+                  cursor: "pointer",
+                }}
+                className="nav-icon-search"
+              />
+            </div>
+          </li>
+        </ul>
         {encryptStorage.getItem("user_logged_in") ? (
           <ul className="navbar-user-control">
             <li>

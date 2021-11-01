@@ -1,5 +1,5 @@
 .container-signup {
-  min-height: 100vh; /* butuh calc ketika navbar selesai */
+  min-height: calc(100vh - var(--navbar-height));
   display: flex;
   align-items: center;
 }
@@ -8,7 +8,8 @@
   background-color: rgba(0, 0, 0, 0.6);
   width: 400px;
   border-radius: 5px;
-  margin: auto;
+  margin: 0 auto;
+  margin-top: 4em;
   padding: 1.2em;
   text-align: center;
 }
@@ -22,8 +23,10 @@
   padding-top: 1em;
   color: white;
 }
-@media screen and (max-width: 900px), screen and (max-height: 450px) {
+@media screen and (max-width: 900px), screen and (max-height: 750px) {
   .content-signup {
     width: 250px;
+    margin-top: 4em;
+    margin-bottom: 2em;
   }
 }

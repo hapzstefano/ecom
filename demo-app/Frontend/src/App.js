@@ -4,8 +4,9 @@ import {
   Redirect,
   Switch,
 } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+import gsap from "gsap";
 
 //pages
 import Navbar from "./components/Navbar";
@@ -24,6 +25,19 @@ import ConfirmOrder from "./components/Pages/ConfirmOrder";
 import Profile from "./components/Pages/Profile";
 
 function App() {
+  useEffect(() => {
+    gsap.to("body", 0, { css: { visibility: "visible" } });
+    const tl = gsap.timeline();
+    tl.from(".Swiper", 0.75, {
+      opacity: 0,
+      y: -50,
+    }).from(".overview-product-content", 0.5, {
+      y: 150,
+      ease: "power4.out",
+      delay: 0,
+      skewY: 11,
+    });
+  }, []);
   return (
     <Router>
       <Switch>
@@ -85,7 +99,6 @@ function App() {
         <Route exact path="/home">
           <Redirect to="/" />
         </Route>
-
         <Route exact path="/logout">
           <Redirect to="/" />
         </Route>

@@ -25,7 +25,7 @@ const barangSchema = new mongoose.Schema({
             author: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "customer",
-                required: true
+                required: false
             }
         },
         required: false    
