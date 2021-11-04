@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const horderSchema = new mongoose.Schema({
-    id_horder: {type: String, required: true},
     tanggal_trans: {type: Date, required: true},
     tanggal_pengiriman: {type: Date, required: true},
     grandtotal: {type: Number, required: true},
@@ -36,6 +35,6 @@ const horderSchema = new mongoose.Schema({
         },
         required: false    
     }]
-})
+},{collection : "horder"})
 
 module.exports = mongoose.model('horder', horderSchema)

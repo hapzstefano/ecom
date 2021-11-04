@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const barangSchema = new mongoose.Schema({
-    id_barang: {type: String, required: true},
     nama: {type: String, required: true},
     harga: {type: Number, required: true},
     stok: {type: Number, required: true},
@@ -30,6 +29,6 @@ const barangSchema = new mongoose.Schema({
         },
         required: false    
     }]
-})
+},{collection : "barang"})
 
 module.exports = mongoose.model('barang', barangSchema)

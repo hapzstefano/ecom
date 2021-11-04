@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
  const customerSchema = new mongoose.Schema({
-    id_cust: {type: String, required: true},
     nama: {type: String, required: true},
     poin: {type: Number, required: true},
     email: {type: String, required: true},
@@ -13,7 +12,7 @@ const mongoose = require('mongoose');
         type: mongoose.Schema.Types.ObjectId,
         ref: "jenisMember"
       }
-})
+},{collection : "customer"})
 
 module.exports = mongoose.model('customer', customerSchema)
 

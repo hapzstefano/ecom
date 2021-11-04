@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const kategoriSchema = new mongoose.Schema({
-    id_kat: {type: String, required: true},
-    nama: {type: String, required: true}
-})
+    nama: {type: String, required: true},
+    gambar: {type:String, required: true}
+},{collection : "category"})
 
-module.exports = mongoose.model('kategori', kategoriSchema)
+module.exports = mongoose.model('category', kategoriSchema)

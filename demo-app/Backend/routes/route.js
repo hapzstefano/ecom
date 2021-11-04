@@ -2,10 +2,12 @@ const Customer = require('../models/customer')
 const Pegawai = require('../models/pegawai')
 const Jenis_member = require('../models/jenis_member')
 const Barang = require('../models/barang')
+const Brand = require ('../models/brand')
 const express = require("express");
 const router = express.Router();
 const cors = require("cors");
 const bcryptjs = require("bcryptjs");
+const multer = require("multer");
 router.use(cors())
 
 router.post('/register',async (req, res) => {
@@ -86,44 +88,21 @@ router.post('/addMember', async (req,res) => {
         console.log("Created");
     });
 })
+router.post('/addBarang', async (req,res) => {
+    const name = req.body.name
+    const brand = await Brand.findOne({nama: req.body.brand}) ;
+    const brandId = brand._id
+    const category = await category.findOne({nama: req.body.category})
+    const categoryId = category._id
+    Barang.save ()
+})
+   
+
 router.post('/test', async (req,res) => {
     const customer = await Customer.findOne({email: req.body.email }).populate('member');
     return res.status(200).send({"customer" : customer});
 })
 router.post('/testInsert', async (req,res) => {
-    const isi = new Barang(
-        {
-            id_barang: '0',
-            nama: 'Tjung',
-            harga: 10,
-            stok: 50,
-            gambar: 'https://assets.logitech.com/assets/65479/2/c922-pro-hd-webcam-refresh.png',
-            status: 1 ,
-            kategori: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "kategori",
-                    required: true
-                },
-    brand: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "brand",
-                required: true
-            },
-            review: [{
-            type: {
-            id_review: {type: String, required: true},
-            comment: {type: String, required: true},
-            rating: {type: String, required: true},
-            author: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "customer",
-                required: true
-            }
-        },
-        required: false    
-    }]
-        }
-    );
     const barang = await Barang.insertMany({email: req.body.email });
     return res.status(200).send({"customer" : customer});
 })
