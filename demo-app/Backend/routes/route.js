@@ -61,7 +61,7 @@ router.post('/login',async (req, res) => {
     if(customer){
         if(bcryptjs.compareSync(inputPassword,customer['password'])){
             console.log("berhasil login");
-            return res.status(201).send({customer:customer});
+            return res.status(201).send({customer:customer, status:"customer"});
         }
         else{
             console.log("gagal login");
@@ -69,7 +69,7 @@ router.post('/login',async (req, res) => {
     }
     else{
         //login buat admin
-        const Pegawai = await pegawai.findOne({email: email});
+        const pegawai = await Pegawai.findOne({email: email});
         
     }
     

@@ -221,7 +221,7 @@ const Navbar = () => {
           <ul className="navbar-user-control">
             <li>
               <span>
-                hello, {encryptStorage.getItem("user_logged_in").user_name}
+                hello, {encryptStorage.getItem("user_logged_in").customer.nama}
               </span>
               <ul>
                 <li>
