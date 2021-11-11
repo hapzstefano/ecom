@@ -1,6 +1,7 @@
 const BrandModel = require ('../models/brand')
 const BarangModel = require('../models/barang')
 const CategoryModel = require('../models/kategori')
+const MemberModel = require('../models/jenis_member')
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
@@ -69,4 +70,62 @@ router.post('/addBarang',uploadBarang.single('image'), async (req,res) => {
 router.post('/addCategory',uploadCategory.single('image'), async (req,res) => { 
     return res.status(200).send("Berhasil Menambah Category")
 })
+
+router.post('/addMember',async (req,res) => {
+    const newMember = new MemberModel({
+        "nama" : req.body.nama,
+        "minimal_poin": req.body.minim_poin,
+        "potongan": req.body.potongan
+    })
+    newMember.save(async function (err, inserted) {
+        if (err) return console.error(err);
+    });
+
+    return res.status(200).send("Berhasil Menambah Member")
+})
+
+router.put('/updateMember', async (req,res) =>{
+    const idMember = req.body.id
+    const namaBaru = req.body.namaBaru
+    const minimPoinBaru = req.body.minimPoinBaru
+    const potonganBaru = req.body.potonganBaru
+    const dataMemberUpdate = await MemberModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(idMember)})
+    dataMemberUpdate.nama = namaBaru;
+    dataMemberUpdate.minimal_poin = minimPoinBaru;
+    dataMemberUpdate.potongan = potonganBaru;
+    dataMemberUpdate.save(async function (err, inserted) {
+        if (err) return console.error(err);
+    });
+    return res.status(200).send("Berhasil Update Member")
+})
+
+router.delete('/deleteMember', async (req,res) =>{
+    const idMemberDelete = req.body.idMemberDelete
+    const dataMemberDelete = await MemberModel.findOneAndDelete({_id : new mongoose.Types.ObjectId(idMemberDelete)})
+    return res.status(200).send("Berhasil Delete Member")
+})
+
+router.get('/getAllMember', async (req,res)=>{
+    const dataMember = await MemberModel.find();
+    return res.status(200).json(dataMember)
+})
+
+router.get('/getMemberByName', async (req,res)=>{
+    const dataMember = await MemberModel.findOne({nama: req.body.nama});
+    if(dataMember){
+        return res.status(200).json(dataMember)
+    }else{
+        return res.status(404).send("Data Tidak Ditemukan");
+    }
+})
+
+router.get('/getMemberById', async (req,res)=>{
+    const dataMember = await MemberModel.findOne({_id: new mongoose.Types.ObjectId(req.body.id)});
+    if(dataMember){
+        return res.status(200).send([{Member: dataMember}])
+    }else{
+        return res.status(404).send("Data Tidak Ditemukan");
+    }
+})
+
 module.exports = router
