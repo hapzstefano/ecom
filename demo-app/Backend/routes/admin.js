@@ -74,7 +74,7 @@ router.post('/addCategory',uploadCategory.single('image'), async (req,res) => {
 })
 
 router.post('/addMember',async (req,res) => {
-    const dataMember = await MemberModel.findOne([{nama: req.body.nama}]);
+    const dataMember = await MemberModel.find({nama: req.body.nama});
     if(dataMember){
         return res.status(400).send("Nama tidak boleh kembar")
     }else{
@@ -96,13 +96,12 @@ router.put('/updateMember', async (req,res) =>{
     const namaBaru = req.body.namaBaru
     const minimPoinBaru = req.body.minimPoinBaru
     const potonganBaru = req.body.potonganBaru
-    const dataMember = await MemberModel.findOne([{_id: new mongoose.Types.ObjectId(idMember)}]);
+    const dataMember = await MemberModel.findOne({_id: new mongoose.Types.ObjectId(idMember)});
     if(dataMember){
-        const dataMemberUpdate = await MemberModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(idMember)})
-        dataMemberUpdate.nama = namaBaru;
-        dataMemberUpdate.minimal_poin = minimPoinBaru;
-        dataMemberUpdate.potongan = potonganBaru;
-        dataMemberUpdate.save(async function (err, inserted) {
+        dataMember.nama = namaBaru;
+        dataMember.minimal_poin = minimPoinBaru;
+        dataMember.potongan = potonganBaru;
+        dataMember.save(async function (err, inserted) {
             if (err) return console.error(err);
         });
         return res.status(200).send("Berhasil Update Member")
@@ -114,9 +113,9 @@ router.put('/updateMember', async (req,res) =>{
 
 router.delete('/deleteMember', async (req,res) =>{
     const idMemberDelete = req.body.idMemberDelete
-    const dataMember = await MemberModel.findOne([{_id: new mongoose.Types.ObjectId(idMemberDelete)}]);
+    const dataMember = await MemberModel.findOne({_id: new mongoose.Types.ObjectId(idMemberDelete)});
     if(dataMember){
-        const dataMemberDelete = await MemberModel.findOneAndDelete({_id : new mongoose.Types.ObjectId(idMemberDelete)})
+        const dataMemberDelete = await MemberModel.findOne({_id : new mongoose.Types.ObjectId(idMemberDelete)})
         return res.status(200).send("Berhasil Delete Member")
     }else{
         return res.status(404).send("Data Member tidak ditemukan")
@@ -147,9 +146,9 @@ router.get('/getMemberById', async (req,res)=>{
 })
 
 router.post('/addPromo',async (req,res) => {
-    const dataPromo = await MemberModel.findOne([{nama: req.body.namaPromo}]);
+    const dataPromo = await PromoModel.findOne({nama: req.body.namaPromo});
     if(dataPromo){
-        return res.status(400).send("Nama Promo tidak boleh kembar")
+        return res.status(400).send("Nama tidak boleh kembar")
     }else{
         const newPromo = new PromoModel({
             "nama" : req.body.namaPromo,
@@ -161,7 +160,7 @@ router.post('/addPromo',async (req,res) => {
         newPromo.save(async function (err, inserted) {
             if (err) return console.error(err);
         });
-    
+
         return res.status(200).send("Berhasil Menambah Promo")
     }
 })
@@ -169,19 +168,18 @@ router.post('/addPromo',async (req,res) => {
 router.put('/updatePromo', async (req,res) =>{
     const idpromo = req.body.idPromo
     const namaBaru = req.body.namaPromoBaru
-    const tglAwalBaru = req.body.tglAwlBaru
-    const tglAkhirBaru = req.body.tglAkhrBaru
+    const tglAwalBaru = req.body.tglAwalBaru
+    const tglAkhirBaru = req.body.tglAkhirBaru
     const potonganBaru = req.body.potonganPromoBaru
     const statusBaru = req.body.statusPromoBaru
-    const dataPromo = await PromoModel.findOne([{_id: new mongoose.Types.ObjectId(idpromo)}]);
+    const dataPromo = await PromoModel.findOne({_id: new mongoose.Types.ObjectId(idpromo)});
     if(dataPromo){
-        const dataPromoUpdate = await PromoModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(idpromo)})
-        dataPromoUpdate.nama = namaBaru;
-        dataPromoUpdate.tanggal_awal = new Date(tglAwalBaru);
-        dataPromoUpdate.tanggal_akhir = new Date(tglAkhirBaru);
-        dataPromoUpdate.potongan = potonganBaru;
-        dataPromoUpdate.status = statusBaru;
-        dataPromoUpdate.save(async function (err, inserted) {
+        dataPromo.nama = namaBaru;
+        dataPromo.tanggal_awal = new Date(tglAwalBaru);
+        dataPromo.tanggal_akhir = new Date(tglAkhirBaru);
+        dataPromo.potongan = potonganBaru;
+        dataPromo.status = statusBaru;
+        dataPromo.save(async function (err, inserted) {
             if (err) return console.error(err);
         });
         return res.status(200).send("Berhasil Update Promo")
@@ -193,9 +191,9 @@ router.put('/updatePromo', async (req,res) =>{
 
 router.delete('/deletePromo', async (req,res) =>{
     const idPromoDelete = req.body.idpromoDelete
-    const dataPromo = await PromoModel.findOne([{_id: new mongoose.Types.ObjectId(idPromoDelete)}]);
+    const dataPromo = await PromoModel.findOne({_id: new mongoose.Types.ObjectId(idPromoDelete)});
     if(dataPromo){
-        const dataPromoDelete = await PromoModel.findOneAndDelete({_id : new mongoose.Types.ObjectId(idPromoDelete)})
+        const dataPromoDelete = await PromoModel.findOne({_id : new mongoose.Types.ObjectId(idPromoDelete)})
         return res.status(200).send("Berhasil Delete Promo")
     }else{
         return res.status(404).send("Data Promo tidak ditemukan")
