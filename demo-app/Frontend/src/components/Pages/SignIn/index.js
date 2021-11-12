@@ -13,21 +13,6 @@ const SignIn = () => {
   );
   const history = useHistory();
   useEffect(() => {
-    $("input").each(function () {
-      if ($(this).val().length > 0) {
-        $(this).addClass("not-empty");
-      } else {
-        $(this).removeClass("not-empty");
-      }
-
-      $(this).on("change", function () {
-        if ($(this).val().length > 0) {
-          $(this).addClass("not-empty");
-        } else {
-          $(this).removeClass("not-empty");
-        }
-      });
-    });
     document.title = "Login";
   }, []);
   const handleSignIn = (event) => {

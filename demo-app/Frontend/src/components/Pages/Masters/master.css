@@ -1,0 +1,24 @@
+.container-master {
+  min-height: calc(100vh - var(--navbar-height));
+  margin-top: var(--navbar-height);
+  display: flex;
+  align-items: center;
+}
+.box {
+  border: 1px solid lightgray;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 450px;
+  border-radius: 5px;
+  margin: auto;
+  padding: 1.2em;
+  text-align: center;
+}
+.box form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+}
+.button-submit {
+  margin-top: 1em;
+}

@@ -4,8 +4,113 @@ import axios from "axios";
 import { EncryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
 import ButtonRipple from "../../../ButtonRipple";
+import "../master.css";
 const MasterEmployee = () => {
-  return <div className="container-master"></div>;
+  const [employeeName, setEmployeeName] = useState("");
+  const [employeeEmail, setEmployeeEmail] = useState("");
+  const [employeePassword, setEmployeePasword] = useState("");
+  const [employeePhone, setEmployeePhone] = useState("");
+  const [status, setStatus] = useState("manager");
+  const history = useHistory();
+
+  useEffect(() => {
+    $("input").each(function () {
+      if ($(this).val().length > 0) {
+        $(this).addClass("not-empty");
+      } else {
+        $(this).removeClass("not-empty");
+      }
+
+      $(this).on("change", function () {
+        if ($(this).val().length > 0) {
+          $(this).addClass("not-empty");
+        } else {
+          $(this).removeClass("not-empty");
+        }
+      });
+    });
+    document.title = "Master Employee";
+  }, []);
+  const handleEmployee = (event) => {
+    event.preventDefault();
+    console.log(status);
+    history.push("/masteremployee");
+  };
+  return (
+    <div className="container-master">
+      <div className="box">
+        <form onSubmit={(e) => handleEmployee(e)}>
+          <div className="form-input">
+            <input
+              type="text"
+              name="employeeName"
+              id="employeeName"
+              value={employeeName}
+              onChange={(e) => setEmployeeName(e.target.value)}
+            />
+            <label htmlFor="employeeName">
+              <span>Name</span>{" "}
+            </label>
+          </div>
+          <div className="form-input">
+            <input
+              type="email"
+              name="employeeEmail"
+              id="employeeEmail"
+              value={employeeEmail}
+              onChange={(e) => setEmployeeEmail(e.target.value)}
+            />
+            <label htmlFor="employeeEmail">
+              <span>Email</span>{" "}
+            </label>
+          </div>
+          <div className="form-input">
+            <input
+              type="password"
+              name="employeePassword"
+              id="employeePassword"
+              value={employeePassword}
+              onChange={(e) => setEmployeePasword(e.target.value)}
+            />
+            <label htmlFor="employeePassword">
+              <span>Password</span>{" "}
+            </label>
+          </div>
+          <div className="form-input">
+            <input
+              type="text"
+              name="employeePhone"
+              id="employeePhone"
+              value={employeePhone}
+              onChange={(e) => setEmployeePhone(e.target.value)}
+            />
+            <label htmlFor="employeePhone">
+              <span>Phone Number</span>{" "}
+            </label>
+          </div>
+          <div className="form-input">
+            <select
+              name="status"
+              id="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
+              <option value="manager">Manager</option>
+              <option value="employee">Employee</option>
+            </select>
+            <label htmlFor="status">
+              <span>Status</span>{" "}
+            </label>
+          </div>
+          <ButtonRipple
+            type="submit"
+            text="Proceed"
+            className="button-submit"
+          />
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default MasterEmployee;

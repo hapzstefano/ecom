@@ -141,9 +141,10 @@ h6,
   padding: 0.7rem 0;
 }
 
+.form-input input[type="date"] + label span,
 .form-input select + label span {
   font-size: 0.65rem;
-  transform: translate(-8px, -21px);
+  transform: translate(-8px, -25.5px);
 }
 .form-input input:focus:not(.form-input-error) {
   border-color: #a9e4d7;

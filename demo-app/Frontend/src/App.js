@@ -7,7 +7,7 @@ import {
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import gsap from "gsap";
-
+import $ from "jquery";
 //pages
 import Navbar from "./components/Navbar";
 import Home from "./components/Pages/Home";
@@ -38,6 +38,7 @@ function App() {
       skewY: 11,
     });
   }, []);
+
   return (
     <Router>
       <Switch>
@@ -64,37 +65,30 @@ function App() {
         <Route exact path="/masterbrand">
           <Navbar />
           <MasterBrand />
-          <Footer />
         </Route>
         <Route exact path="/mastercategory">
           <Navbar />
           <MasterCategory />
-          <Footer />
         </Route>
         <Route exact path="/masterpromo">
           <Navbar />
           <MasterPromo />
-          <Footer />
         </Route>
         <Route exact path="/mastermember">
           <Navbar />
           <MasterMember />
-          <Footer />
         </Route>
         <Route exact path="/masterstock">
           <Navbar />
           <MasterStock />
-          <Footer />
         </Route>
         <Route exact path="/masteremployee">
           <Navbar />
           <MasterEmployee />
-          <Footer />
         </Route>
         <Route exact path="/profile">
           <Navbar />
           <Profile />
-          <Footer />
         </Route>
         <Route exact path="/home">
           <Redirect to="/" />
