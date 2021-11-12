@@ -153,8 +153,8 @@ router.post('/addPromo',async (req,res) => {
     }else{
         const newPromo = new PromoModel({
             "nama" : req.body.namaPromo,
-            "tanggal_awal": moment(new Date(req.body.tglAwalPromo)),
-            "tanggal_akhir": moment(new Date(req.body.tglAkhirPromo)),
+            "tanggal_awal": new Date(req.body.tglAwalPromo),
+            "tanggal_akhir": new Date(req.body.tglAkhirPromo),
             "potongan": req.body.potongan,
             "status": 1
         })
@@ -177,8 +177,8 @@ router.put('/updatePromo', async (req,res) =>{
     if(dataPromo){
         const dataPromoUpdate = await PromoModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(idpromo)})
         dataPromoUpdate.nama = namaBaru;
-        dataPromoUpdate.tanggal_awal = moment(new Date(tglAwalBaru));
-        dataPromoUpdate.tanggal_akhir = moment(new Date(tglAkhirBaru));
+        dataPromoUpdate.tanggal_awal = new Date(tglAwalBaru);
+        dataPromoUpdate.tanggal_akhir = new Date(tglAkhirBaru);
         dataPromoUpdate.potongan = potonganBaru;
         dataPromoUpdate.status = statusBaru;
         dataPromoUpdate.save(async function (err, inserted) {
