@@ -1,9 +1,12 @@
 const BrandModel = require ('../models/brand')
 const BarangModel = require('../models/barang')
 const CategoryModel = require('../models/kategori')
+const MemberModel = require('../models/jenis_member')
+const PromoModel = require('../models/promo')
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
+const moment = require('moment');
 const multer = require('multer');
 const mongoose = require('mongoose')
 router.use(cors())
@@ -69,4 +72,167 @@ router.post('/addBarang',uploadBarang.single('image'), async (req,res) => {
 router.post('/addCategory',uploadCategory.single('image'), async (req,res) => { 
     return res.status(200).send("Berhasil Menambah Category")
 })
+
+router.post('/addMember',async (req,res) => {
+    const dataMember = await MemberModel.find({nama: req.body.nama});
+    if(dataMember){
+        return res.status(400).send("Nama tidak boleh kembar")
+    }else{
+        const newMember = new MemberModel({
+            "nama" : req.body.nama,
+            "minimal_poin": req.body.minim_poin,
+            "potongan": req.body.potongan,
+            "status": 1
+        })
+        newMember.save(async function (err, inserted) {
+            if (err) return console.error(err);
+        });
+    
+        return res.status(200).send("Berhasil Menambah Member")
+    }
+})
+
+router.put('/updateMember/:id', async (req,res) =>{
+    const idMember = req.params.id
+    const namaBaru = req.body.namaBaru
+    const minimPoinBaru = req.body.minimPoinBaru
+    const potonganBaru = req.body.potonganBaru
+    const dataMember = await MemberModel.findOne({_id: new mongoose.Types.ObjectId(idMember)});
+    if(dataMember){
+        await MemberModel.findOneAndUpdate(
+            {_id: new mongoose.Types.ObjectId(idMember)},
+            {
+                nama: namaBaru,
+                minimal_poin: minimPoinBaru,
+                potongan : potonganBaru
+            }
+        );
+        return res.status(200).send("Berhasil Update Member")
+    }else{
+        return res.status(404).send("Data Member tidak ditemukan")
+    }
+})
+
+router.delete('/deleteMember/:idMemberDelete', async (req,res) =>{
+    const idMemberDelete = req.params.idMemberDelete
+    const dataMember = await MemberModel.findOne({_id: new mongoose.Types.ObjectId(idMemberDelete)});
+    if(dataMember){
+        await MemberModel.findOneAndUpdate(
+            {_id: new mongoose.Types.ObjectId(idMemberDelete)},
+            {
+                status : 0
+            }
+        );
+        return res.status(200).send("Berhasil Delete Member")
+    }else{
+        return res.status(404).send("Data Member tidak ditemukan")
+    }
+})
+
+router.get('/getAllMember', async (req,res)=>{
+    const dataMember = await MemberModel.find();
+    return res.status(200).json(dataMember)
+})
+
+router.get('/getMemberByName/:nama', async (req,res)=>{
+    const dataMember = await MemberModel.findOne({nama: req.params.nama});
+    if(dataMember){
+        return res.status(200).json(dataMember)
+    }else{
+        return res.status(404).send("Data Tidak Ditemukan");
+    }
+})
+
+router.get('/getMemberById/:id', async (req,res)=>{
+    const dataMember = await MemberModel.findOne({_id: new mongoose.Types.ObjectId(req.params.id)});
+    if(dataMember){
+        return res.status(200).send([{Member: dataMember}])
+    }else{
+        return res.status(404).send("Data Tidak Ditemukan");
+    }
+})
+
+router.post('/addPromo',async (req,res) => {
+    const dataPromo = await PromoModel.findOne({nama: req.body.namaPromo});
+    if(dataPromo){
+        return res.status(400).send("Nama tidak boleh kembar")
+    }else{
+        const newPromo = new PromoModel({
+            "nama" : req.body.namaPromo,
+            "tanggal_awal": new Date(req.body.tglAwalPromo),
+            "tanggal_akhir": new Date(req.body.tglAkhirPromo),
+            "potongan": req.body.potongan,
+            "status": 1
+        })
+        newPromo.save(async function (err, inserted) {
+            if (err) return console.error(err);
+        });
+
+        return res.status(200).send("Berhasil Menambah Promo")
+    }
+})
+
+router.put('/updatePromo/:idPromo', async (req,res) =>{
+    const idpromo = req.params.idPromo
+    const namaBaru = req.body.namaPromoBaru
+    const tglAwalBaru = req.body.tglAwalBaru
+    const tglAkhirBaru = req.body.tglAkhirBaru
+    const potonganBaru = req.body.potonganPromoBaru
+    const dataPromo = await PromoModel.findOne({_id: new mongoose.Types.ObjectId(idpromo)});
+    if(dataPromo){
+        await PromoModel.findOneAndUpdate(
+            {_id: new mongoose.Types.ObjectId(idpromo)},
+            {
+                nama: namaBaru,
+                tanggal_awal: new Date(tglAwalBaru),
+                tanggal_akhir: new Date(tglAkhirBaru),
+                potongan: potonganBaru
+            }
+        );
+        return res.status(200).send("Berhasil Update Promo")
+    }else{
+        return res.status(404).send("Data Promo tidak ditemukan")
+    }
+    
+})
+
+router.delete('/deletePromo/:idpromoDelete', async (req,res) =>{
+    const idPromoDelete = req.params.idpromoDelete
+    const dataPromo = await PromoModel.findOne({_id: new mongoose.Types.ObjectId(idPromoDelete)});
+    if(dataPromo){
+        await PromoModel.findOneAndUpdate(
+            {_id: new mongoose.Types.ObjectId(idPromoDelete)},
+            {
+                status: 0
+            }
+        );
+        return res.status(200).send("Berhasil Delete Promo")
+    }else{
+        return res.status(404).send("Data Promo tidak ditemukan")
+    }
+})
+
+router.get('/getAllPromo', async (req,res)=>{
+    const dataPromo = await PromoModel.find();
+    return res.status(200).json(dataPromo)
+})
+
+router.get('/getPromoByName/:nama', async (req,res)=>{
+    const dataPromo = await PromoModel.findOne({nama: req.params.nama});
+    if(dataPromo){
+        return res.status(200).json(dataPromo)
+    }else{
+        return res.status(404).send("Data Tidak Ditemukan");
+    }
+})
+
+router.get('/getPromoById/:id', async (req,res)=>{
+    const dataPromo = await PromoModel.findOne({_id: new mongoose.Types.ObjectId(req.params.id)});
+    if(dataPromo){
+        return res.status(200).send([{Promo: dataPromo}])
+    }else{
+        return res.status(404).send("Data Tidak Ditemukan");
+    }
+})
+
 module.exports = router

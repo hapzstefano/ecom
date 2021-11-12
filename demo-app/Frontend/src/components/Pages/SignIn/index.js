@@ -25,6 +25,17 @@ const SignIn = () => {
       })
       .then((res) => {
         console.log(res.data);
+        if(res.data.status === "customer"){
+          console.log("masuk");
+          encryptStorage.setItem("user_logged_in", res.data);
+          history.push("/");
+        }
+        else if(res.data.status === "admin"){
+
+        }
+        else{
+          
+        }
       })
       .catch((err) => {
         //error
@@ -37,14 +48,14 @@ const SignIn = () => {
         }
       });
     //DISINI PENGECEKAN EMAIL PASSWORD DR API
-    if (email === "manager@123" && password === "manager") {
-      encryptStorage.setItem("manager_logged_in", true);
-    } else if (email === "admin@123" && password === "admin") {
-      encryptStorage.setItem("admin_logged_in", true);
-    } else {
-      encryptStorage.setItem("user_logged_in", true);
-    }
-    history.push("/");
+    // if (email === "manager@123" && password === "manager") {
+    //   encryptStorage.setItem("manager_logged_in", true);
+    // } else if (email === "admin@123" && password === "admin") {
+    //   encryptStorage.setItem("admin_logged_in", true);
+    // } else {
+    //   encryptStorage.setItem("user_logged_in", true);
+    // }
+    
   };
   return (
     <div
