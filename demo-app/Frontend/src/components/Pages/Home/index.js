@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import $ from "jquery";
 import { EncryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
-import ButtonRipple from "../../ButtonRipple";
 import { Parallax, Background } from "react-parallax";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -146,7 +145,7 @@ const Home = () => {
                   className="content-img-anim"
                 />
               </div>
-              <div className="overview-product-title">Mother Board</div>
+              <div className="overview-product-title">Motherboard</div>
             </div>
             <div className="overview-product-content">
               <div className="overview-product-img">

@@ -32,11 +32,10 @@ const SignIn = () => {
   }, []);
   const handleSignIn = (event) => {
     const formData = new FormData(event.currentTarget);
-    event.preventDefault();
     axios
-      .post(`http://localhost:3001/login`,{
-        email:email,
-        password:password,
+      .post(`http://localhost:3001/login`, {
+        email: email,
+        password: password,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
