@@ -1,3 +1,4 @@
+'use strict'
 const Customer = require('../models/customer')
 const Pegawai = require('../models/pegawai')
 const Jenis_member = require('../models/jenis_member')
