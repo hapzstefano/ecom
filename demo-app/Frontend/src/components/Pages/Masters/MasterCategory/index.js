@@ -28,8 +28,27 @@ const MasterCategory = () => {
   }, []);
   const handleCategory = (event) => {
     event.preventDefault();
+    axios
+      .post(`http://localhost:3001/login`, {
+        name:cateName,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        history.push("/mastercategory");
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
     console.log(cateName);
-    history.push("/mastercategory");
+    
   };
   return (
     <div className="container-master">

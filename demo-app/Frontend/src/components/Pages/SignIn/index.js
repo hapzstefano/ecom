@@ -16,6 +16,7 @@ const SignIn = () => {
     document.title = "Login";
   }, []);
   const handleSignIn = (event) => {
+    event.preventDefault();
     const formData = new FormData(event.currentTarget);
     axios
       .post(`http://localhost:3001/login`, {
@@ -27,7 +28,7 @@ const SignIn = () => {
         console.log(res.data);
         if(res.data.status === "customer"){
           console.log("masuk");
-          encryptStorage.setItem("user_logged_in", res.data);
+          encryptStorage.setItem("admin_logged_in", res.data);
           history.push("/");
         }
         else if(res.data.status === "admin"){

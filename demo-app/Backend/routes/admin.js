@@ -6,7 +6,6 @@ const PromoModel = require('../models/promo')
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const moment = require('moment');
 const multer = require('multer');
 const mongoose = require('mongoose')
 router.use(cors())
