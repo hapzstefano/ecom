@@ -29,7 +29,7 @@ const MasterCategory = () => {
   const handleCategory = (event) => {
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/login`, {
+      .post(`http://localhost:3001/addCategory`, {
         name:cateName,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })

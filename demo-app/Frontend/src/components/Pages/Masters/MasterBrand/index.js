@@ -38,10 +38,10 @@ const MasterBrand = () => {
   const handleBrand = (event) => {
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/login`, {
+      .post(`http://localhost:3001/addBrand`, {
         name:brandName,
-        name:brandDesc,
-        name:brandImg,
+        description:brandDesc,
+        image:brandImg,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {

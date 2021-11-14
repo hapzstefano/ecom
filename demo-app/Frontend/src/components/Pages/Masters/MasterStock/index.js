@@ -38,6 +38,28 @@ const MasterStock = () => {
   }, []);
   const handleStock = (event) => {
     event.preventDefault();
+    axios
+      .post(`http://localhost:3001/addBarang`, {
+        name:stockName,
+        price:stockPrice,
+        stok:stockQty,
+        image:stockImg,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        history.push("/mastercategory");
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
     console.log(stockImg);
     history.push("/masterstock");
   };
