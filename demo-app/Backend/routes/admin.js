@@ -6,7 +6,6 @@ const PromoModel = require('../models/promo')
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const moment = require('moment');
 const multer = require('multer');
 const mongoose = require('mongoose')
 router.use(cors())
@@ -19,42 +18,69 @@ const barangStorage = multer.diskStorage({
         const extension = file.originalname.split('.')[file.originalname.split('.').length - 1];
         const brand = await BrandModel.findOne({nama: req.body.brand}) 
         const category = await CategoryModel.findOne({nama: req.body.category})
-        const barang = new BarangModel({
-            "nama" : req.body.name,
-            "harga": req.body.price,
-            "stok": req.body.stok,
-            "gambar":"../uploads/barang/",
-            "status":1,
-            "kategori": category._id ,
-            "brand": brand._id
-        })
-        let _id
-        barang.save(async function (err, inserted) {
-            if (err) return console.error(err);
-            _id = inserted._id
-            await BarangModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/barang"+_id+"."+extension})
-            callback(null, (_id + '.' + extension));
-        });
-        
+        const check = await BarangModel.findOne({_id : req.params._id})
+        if (check){
+            const barang = await BarangModel.findOneAndUpdate({_id: req.params._id},{
+                "nama" : req.body.name,
+                "harga": req.body.price,
+                "stok": req.body.stok,
+                "status":1,
+                "kategori": category._id ,
+                "brand": brand._id
+            })
+            callback(null, (req.params._id + '.' + extension));
+        }
+        else{
+            const barang = new BarangModel({
+                "nama" : req.body.name,
+                "harga": req.body.price,
+                "stok": req.body.stok,
+                "gambar":"../uploads/barang/",
+                "status":1,
+                "kategori": category._id ,
+                "brand": brand._id
+            })
+            let _id
+            barang.save(async function (err, inserted) {
+                if (err) return console.error(err);
+                _id = inserted._id
+                await BarangModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/barang"+_id+"."+extension})
+                callback(null, (_id + '.' + extension));
+            });
+            
+        }     
     }
 })
 
-const categoryStorage = multer.diskStorage({
+const brandStorage = multer.diskStorage({
     destination: function(req, file, callback) {
-        callback(null, '../uploads/category');
+        callback(null, '../uploads/brand');
     },
     filename: async function(req, file, callback) {
         const extension = file.originalname.split('.')[file.originalname.split('.').length - 1];
-        const category = new CategoryModel({
-            "nama" : req.body.name,
-            "gambar":'../uploads/category/'
-        })
-        category.save(async function (err, inserted) {
-            if (err) return console.error(err);
-            _id = inserted._id
-            await CategoryModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/category/"+_id+"."+extension})
-            callback(null, (_id + '.' + extension));
-        });        
+        const check = await BrandModel.findOne({nama: req.body.brand}) 
+        if (check){
+            const brand = await BrandModel.findOneAndUpdate({_id: req.params._id},{
+                "nama" : req.body.name,
+                "deskripsi": req.body.description,
+            })
+            callback(null, (req.params._id + '.' + extension));
+        }
+        else{
+            const brand = new BrandModel({
+                "nama" : req.body.name,
+                "gambar":"../uploads/brand/",
+                "deskripsi":req.body.description,
+                "status":1,
+            })
+            let _id
+            brand.save(async function (err, inserted) {
+                if (err) return console.error(err);
+                _id = inserted._id
+                await BrandModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/brand"+_id+"."+extension})
+                callback(null, (_id + '.' + extension));
+            });          
+        }     
     }
 })
 
@@ -62,16 +88,114 @@ const uploadBarang = multer({
     storage: barangStorage,
 });
 
-const uploadCategory = multer({
-    storage: categoryStorage,
+const uploadBrand = multer({
+    storage: brandStorage,
 });
+
 
 router.post('/addBarang',uploadBarang.single('image'), async (req,res) => { 
     return res.status(200).send("Berhasil Menambah barang")
 })
-router.post('/addCategory',uploadCategory.single('image'), async (req,res) => { 
-    return res.status(200).send("Berhasil Menambah Category")
+
+router.post('/addCategory', async (req,res) => { 
+    const category = new CategoryModel({
+        "nama" : req.body.name,
+        "Status": 1
+    })
+    category.save(async function (err, inserted) {
+        if (err) return console.error(err);
+        return res.status(200).send("Berhasil Menambah Category")
+    });        
 })
+
+router.post('/addBrand', uploadBrand.single('image'), async (req,res) => { 
+    return res.status(200).send("Berhasil Menambah brand")
+})
+
+router.post('/updateBrand/:_id',uploadBrand.single('image'), async (req,res) => {
+    return res.status(200).send("Berhasil Mengubah Brand")
+})
+
+router.post('/updateBarang/:_id',uploadBarang.single('image'), async (req,res) => {
+    return res.status(200).send("Berhasil Mengubah Barang")
+})
+
+router.post('/updateCategory/:_id', async (req,res) => {
+    const category = await CategoryModel.findOneAndUpdate({_id: req.params._id},{
+        "nama" : req.body.name,
+    })
+    if (!category)
+    return res.status(400).send('Category tidak ditemukan')
+    return res.status(200).send('Berhasil update Category')
+})
+
+router.post('/deleteBarang/:_id', async (req,res) => {
+    const barang = await BarangModel.findOneAndUpdate({_id: req.params._id},{
+       "status": 0
+    })
+    return res.status(200).send("Berhasil Delete Barang")
+})
+
+router.post('/deleteCategory/:_id', async (req,res) => {
+    const category = await CategoryModel.findOneAndUpdate({_id: req.params._id},{
+       "status": 0
+    })
+    if (category)
+        return res.status(200).send("Berhasil Delete Barang")
+    return res.status(200).send("Barang tidak ditemukan")
+})
+
+router.post('/deleteBrand/:_id', async (req,res) => {
+    const brand = await BrandModel.findOneAndUpdate({_id: req.params._id},{
+       "status": 0
+    })
+    if (brand)
+        return res.status(200).send("Berhasil Delete brand")
+    return res.status(200).send("Brand tidak ditemukan")
+})
+
+router.get('/getAllBarang', async (req,res)=>{
+    const barang = await BarangModel.find();
+    return res.status(200).json(barang)
+})
+
+router.get('/getAllCategory', async (req,res)=>{
+    const category = await CategoryModel.find();
+    return res.status(200).json(category)
+})
+
+router.get('/getAllBrand', async (req,res)=>{
+    const brand = await BrandModel.find();
+    return res.status(200).json(brand)
+})
+
+router.get('/getCategory/:_id', async (req,res)=>{
+    const category = await CategoryModel.findOne({_id: req.params._id});
+    if(category){
+        return res.status(200).json(category)
+    }else{
+        return res.status(404).send("Data Tidak Ditemukan");
+    }
+})
+
+router.get('/getBarang/:_id',async (req,res) => {
+    const barang = await BarangModel.findOne({_id: req.params._id});
+    if(barang){
+        return res.status(200).json(barang)
+    }else{
+        return res.status(404).send("Data Tidak Ditemukan");
+    }
+})
+
+router.get('/getBrand/:_id',async (req,res) => {
+    const brand = await BrandModel.findOne({_id: req.params._id});
+    if(brand){
+        return res.status(200).json(brand)
+    }else{
+        return res.status(404).send("Data Tidak Ditemukan");
+    }
+})
+
 
 router.post('/addMember',async (req,res) => {
     const dataMember = await MemberModel.find({nama: req.body.nama});
@@ -235,4 +359,5 @@ router.get('/getPromoById/:id', async (req,res)=>{
     }
 })
 
+   
 module.exports = router
