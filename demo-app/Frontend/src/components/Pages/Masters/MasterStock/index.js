@@ -5,11 +5,12 @@ import { EncryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
 import ButtonRipple from "../../../ButtonRipple";
 import "../master.css";
+import {generateFormData} from "../../../../utils/generateFormData";
 const MasterStock = () => {
   const [stockName, setStockName] = useState("");
   const [stockPrice, setStockPrice] = useState("");
   const [stockQty, setStockQty] = useState("");
-  const [stockImg, setStockImg] = useState("");
+  const [stockImg, setStockImg] = useState(null);
   const [stockBrand, setStockBrand] = useState("");
   const [stockCategory, setStockCategory] = useState("");
   const [stockReadyImg, setStockReadyImg] = useState("");
@@ -76,19 +77,23 @@ const MasterStock = () => {
     });
     document.title = "Master Stock";
   }, []);
-  const handleStock = (event) => {
-    event.preventDefault();
+  const handleStock = (e) => {
+    const formData = generateFormData({
+      name: stockName,
+      price: stockPrice,
+      stok: stockQty,
+      image: stockImg,
+      brand: stockBrand,
+      category: stockCategory,
+    });
+    e.preventDefault();
     axios
-      .post(`http://localhost:3001/addBarang`, {
-        name: stockName,
-        price: stockPrice,
-        stok: stockQty,
-        image: stockImg,
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      .post(`http://localhost:3001/admin/addBarang`, formData,{
+        headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
         console.log(res.data);
-        history.push("/mastercategory");
+        history.push("/masterstock");
       })
       .catch((err) => {
         //error
@@ -155,7 +160,7 @@ const MasterStock = () => {
             >
               {tempBrand &&
                 tempBrand.map((props, index) => {
-                  return <option value={props.id}>{props.nama}</option>;
+                  return <option value={props.nama}>{props.nama}</option>;
                 })}
             </select>
             <label htmlFor="stockBrand">
@@ -171,7 +176,7 @@ const MasterStock = () => {
             >
               {tempCate &&
                 tempCate.map((props, index) => {
-                  return <option value={props.id}>{props.nama}</option>;
+                  return <option value={props.nama}>{props.nama}</option>;
                 })}
             </select>
             <label htmlFor="stockCategory">

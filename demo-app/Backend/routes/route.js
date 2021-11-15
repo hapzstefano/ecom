@@ -1,5 +1,6 @@
 'use strict'
 const Customer = require('../models/customer')
+const CategoryModel = require('../models/kategori')
 const Pegawai = require('../models/pegawai')
 const Jenis_member = require('../models/jenis_member')
 const Barang = require('../models/barang')
@@ -73,8 +74,8 @@ router.post('/login',async (req, res) => {
         const pegawai = await Pegawai.findOne({email: email});
         
     }
-    
 })
+
 router.post('/addMember', async (req,res) => {
     const jenis_member = new Jenis_member(
         {

@@ -4,6 +4,7 @@ import axios from "axios";
 import { EncryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
 import ButtonRipple from "../../../ButtonRipple";
+import {generateFormData} from "../../../../utils/generateFormData";
 import "../master.css";
 const MasterBrand = () => {
   const [brandName, setBrandName] = useState("");
@@ -36,13 +37,15 @@ const MasterBrand = () => {
     document.title = "Master Brand";
   }, []);
   const handleBrand = (event) => {
+    const formData = generateFormData({
+      name:brandName,
+      description:brandDesc,
+      image:brandImg,
+    });
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/addBrand`, {
-        name:brandName,
-        description:brandDesc,
-        image:brandImg,
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      .post(`http://localhost:3001/admin/addBrand`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
         console.log(res.data);

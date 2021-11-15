@@ -58,7 +58,7 @@ const brandStorage = multer.diskStorage({
     },
     filename: async function(req, file, callback) {
         const extension = file.originalname.split('.')[file.originalname.split('.').length - 1];
-        const check = await BrandModel.findOne({nama: req.body.brand}) 
+        const check = await BrandModel.findOne({nama: req.body.name}) 
         if (check){
             const brand = await BrandModel.findOneAndUpdate({_id: req.params._id},{
                 "nama" : req.body.name,
@@ -94,13 +94,15 @@ const uploadBrand = multer({
 
 
 router.post('/addBarang',uploadBarang.single('image'), async (req,res) => { 
+    console.log(req.body);
+    console.log("file: "+req.file);
     return res.status(200).send("Berhasil Menambah barang")
 })
 
 router.post('/addCategory', async (req,res) => { 
     const category = new CategoryModel({
         "nama" : req.body.name,
-        "Status": 1
+        "status": 1
     })
     category.save(async function (err, inserted) {
         if (err) return console.error(err);
@@ -198,8 +200,9 @@ router.get('/getBrand/:_id',async (req,res) => {
 
 
 router.post('/addMember',async (req,res) => {
+    console.log(req.body.nama);
     const dataMember = await MemberModel.find({nama: req.body.nama});
-    if(dataMember){
+    if(dataMember.length != 0){
         return res.status(400).send("Nama tidak boleh kembar")
     }else{
         const newMember = new MemberModel({

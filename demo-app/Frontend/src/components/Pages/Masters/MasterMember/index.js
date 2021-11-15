@@ -31,7 +31,7 @@ const MasterMember = () => {
   const handleMember = (event) => {
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/addMember`, {
+      .post(`http://localhost:3001/admin/addMember`, {
         nama:memberName,
         minim_poin:memberPoin,
         potongan:memberDisc,
@@ -39,7 +39,7 @@ const MasterMember = () => {
       })
       .then((res) => {
         console.log(res.data);
-        history.push("/mastercategory");
+        history.push("/mastermember");
       })
       .catch((err) => {
         //error

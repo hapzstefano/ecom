@@ -34,7 +34,7 @@ const MasterEmployee = () => {
   const handleEmployee = (event) => {
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/login`, {
+      .post(`http://localhost:3001/admin/login`, {
         name:employeeName,
         email:employeeEmail,
         password:employeePassword,

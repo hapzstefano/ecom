@@ -31,7 +31,7 @@ const MasterPromo = () => {
   const handlePromo = (event) => {
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/addPromo`, {
+      .post(`http://localhost:3001/admin/addPromo`, {
         namaPromo:promoName,
         tglAwalPromo:promoStart,
         tglAkhirPromo:promoEnd,
