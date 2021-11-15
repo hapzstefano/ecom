@@ -23,6 +23,7 @@ import MasterPromo from "./components/Pages/Masters/MasterPromo";
 import MasterStock from "./components/Pages/Masters/MasterStock";
 import ConfirmOrder from "./components/Pages/ConfirmOrder";
 import Profile from "./components/Pages/Profile";
+import ForgetPassword from "./components/Pages/ForgetPassword";
 
 function App() {
   useEffect(() => {
@@ -89,9 +90,15 @@ function App() {
         <Route exact path="/profile">
           <Navbar />
           <Profile />
+          <Footer />
         </Route>
         <Route exact path="/home">
           <Redirect to="/" />
+        </Route>
+        <Route exact path="/forgetpassword">
+          <Navbar />
+          <ForgetPassword />
+          <Footer />
         </Route>
         <Route exact path="/logout">
           <Redirect to="/" />

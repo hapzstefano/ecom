@@ -10,7 +10,11 @@ const MasterStock = () => {
   const [stockPrice, setStockPrice] = useState("");
   const [stockQty, setStockQty] = useState("");
   const [stockImg, setStockImg] = useState("");
+  const [stockBrand, setStockBrand] = useState("");
+  const [stockCategory, setStockCategory] = useState("");
   const [stockReadyImg, setStockReadyImg] = useState("");
+  const [tempBrand, setTempBrand] = useState([]);
+  const [tempCate, setTempCate] = useState([]);
   const history = useHistory();
 
   const onSelectFile = (e) => {
@@ -19,6 +23,42 @@ const MasterStock = () => {
     console.log(e.target.files[0]);
   };
   useEffect(() => {
+    axios
+      .get(`http://localhost:3001/admin/getAllBrand`, {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setTempBrand(res.data);
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
+    axios
+      .get(`http://localhost:3001/admin/getAllCategory`, {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setTempCate(res.data);
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
     $("input").each(function () {
       if ($(this).val().length > 0) {
         $(this).addClass("not-empty");
@@ -40,10 +80,10 @@ const MasterStock = () => {
     event.preventDefault();
     axios
       .post(`http://localhost:3001/addBarang`, {
-        name:stockName,
-        price:stockPrice,
-        stok:stockQty,
-        image:stockImg,
+        name: stockName,
+        price: stockPrice,
+        stok: stockQty,
+        image: stockImg,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
@@ -101,6 +141,41 @@ const MasterStock = () => {
             />
             <label htmlFor="stockQty">
               <span>Quantity</span>{" "}
+            </label>
+          </div>
+          <div
+            className="form-input"
+            style={{ marginBottom: "2em", marginTop: "1em" }}
+          >
+            <select
+              name="stockBrand"
+              id="stockBrand"
+              value={stockBrand}
+              onChange={(e) => setStockBrand(e.target.value)}
+            >
+              {tempBrand &&
+                tempBrand.map((props, index) => {
+                  return <option value={props.id}>{props.nama}</option>;
+                })}
+            </select>
+            <label htmlFor="stockBrand">
+              <span>Brand</span>{" "}
+            </label>
+          </div>
+          <div className="form-input" style={{ marginBottom: "1em" }}>
+            <select
+              name="stockCategory"
+              id="stockCategory"
+              value={stockCategory}
+              onChange={(e) => setStockCategory(e.target.value)}
+            >
+              {tempCate &&
+                tempCate.map((props, index) => {
+                  return <option value={props.id}>{props.nama}</option>;
+                })}
+            </select>
+            <label htmlFor="stockCategory">
+              <span>Category</span>{" "}
             </label>
           </div>
           <div className="form-input">

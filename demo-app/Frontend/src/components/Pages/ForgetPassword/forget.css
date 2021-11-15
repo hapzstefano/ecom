@@ -1,33 +1,32 @@
-.container-master {
+.container-forget {
   min-height: calc(100vh - var(--navbar-height));
-  margin-top: var(--navbar-height);
   display: flex;
   align-items: center;
 }
-.box {
+.content-forget {
   border: 1px solid lightgray;
   background-color: rgba(0, 0, 0, 0.6);
-  width: 450px;
+  width: 400px;
   border-radius: 5px;
-  margin: auto;
+  margin: 0 auto;
+  margin-top: 4em;
   padding: 1.2em;
   text-align: center;
 }
-.box form {
+.content-forget form {
   align-items: center;
   display: flex;
   flex-direction: column;
   padding: 1em;
 }
-.button-submit {
-  margin-top: 1em;
+.content-forget h2 {
+  padding-top: 1em;
+  color: white;
 }
 @media screen and (max-width: 900px), screen and (max-height: 750px) {
-  .container-master {
-    min-height: calc(80vh - var(--navbar-height));
-  }
-  .box {
+  .content-forget {
     width: 250px;
-    margin-top: 7em;
+    margin-top: 4em;
+    margin-bottom: 2em;
   }
 }

@@ -13,6 +13,21 @@ const SignIn = () => {
   );
   const history = useHistory();
   useEffect(() => {
+    $("input").each(function () {
+      if ($(this).val().length > 0) {
+        $(this).addClass("not-empty");
+      } else {
+        $(this).removeClass("not-empty");
+      }
+
+      $(this).on("change", function () {
+        if ($(this).val().length > 0) {
+          $(this).addClass("not-empty");
+        } else {
+          $(this).removeClass("not-empty");
+        }
+      });
+    });
     document.title = "Login";
   }, []);
   const handleSignIn = (event) => {
@@ -26,16 +41,12 @@ const SignIn = () => {
       })
       .then((res) => {
         console.log(res.data);
-        if(res.data.status === "customer"){
+        if (res.data.status === "customer") {
           console.log("masuk");
           encryptStorage.setItem("admin_logged_in", res.data);
           history.push("/");
-        }
-        else if(res.data.status === "admin"){
-
-        }
-        else{
-          
+        } else if (res.data.status === "admin") {
+        } else {
         }
       })
       .catch((err) => {
@@ -56,7 +67,6 @@ const SignIn = () => {
     // } else {
     //   encryptStorage.setItem("user_logged_in", true);
     // }
-    
   };
   return (
     <div
