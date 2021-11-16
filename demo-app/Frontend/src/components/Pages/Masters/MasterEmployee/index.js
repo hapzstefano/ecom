@@ -34,11 +34,12 @@ const MasterEmployee = () => {
   const handleEmployee = (event) => {
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/admin/login`, {
-        name:employeeName,
+      .post(`http://localhost:3001/admin/addPegawai`, {
+        nama:employeeName,
         email:employeeEmail,
         password:employeePassword,
-        phone:employeePhone,
+        notlp:employeePhone,
+        jenis:status,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {

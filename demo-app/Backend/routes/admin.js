@@ -3,6 +3,7 @@ const BarangModel = require('../models/barang')
 const CategoryModel = require('../models/kategori')
 const MemberModel = require('../models/jenis_member')
 const PromoModel = require('../models/promo')
+const PegawaiModel = require('../models/pegawai')
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
@@ -362,5 +363,71 @@ router.get('/getPromoById/:id', async (req,res)=>{
     }
 })
 
-   
+//master pegawai/employee
+router.post('/addPegawai',async (req,res) => {
+    const dataPegawai = await PegawaiModel.findOne({nama: req.body.nama});
+    console.log(req.body);
+    if(dataPegawai){
+        return res.status(400).send("Nama tidak boleh kembar")
+    }else{
+        let jenis= 1;
+        if(req.body.jenis == "employee"){
+            jenis = 2;
+        }
+        const newPegawai = new PegawaiModel({
+            "nama" : req.body.nama,
+            "email": req.body.email,
+            "password": req.body.password,
+            "notlp": req.body.notlp,
+            "jenis": jenis,
+            "status": 1
+        })
+        newPegawai.save(async function (err, inserted) {
+            if (err) return console.error(err);
+        });
+
+        return res.status(200).send("Berhasil Menambah Pegawai")
+    }
+})
+
+router.put('/updatePegawai/:idPegawai', async (req,res) =>{
+    const idpegawai = req.params.idPegawai;
+    const nama = req.body.nama;
+    const email = req.body.email;
+    const password = req.body.password;
+    const notlp = req.body.notlp;
+    const dataPegawai = await PegawaiModel.findOne({_id: new mongoose.Types.ObjectId(idpegawai)});
+    if(dataPegawai){
+        await PegawaiModel.findOneAndUpdate(
+            {_id: new mongoose.Types.ObjectId(idpegawai)},
+            {
+                nama: nama,
+                email: email,
+                password: password,
+                notlp: notlp,
+                potongan: potonganBaru
+            }
+        );
+        return res.status(200).send("Berhasil Update Pegawai");
+    }else{
+        return res.status(404).send("Data Pegawai tidak ditemukan");
+    }
+    
+})
+
+router.delete('/deletePromo/:idpromoDelete', async (req,res) =>{
+    const idPegawaiDelete = req.params.idpegawai;
+    const dataPegawai = await PegawaiModel.findOne({_id: new mongoose.Types.ObjectId(idPegawaiDelete)});
+    if(dataPegawai){
+        await PegawaiModel.findOneAndUpdate(
+            {_id: new mongoose.Types.ObjectId(idPegawaiDelete)},
+            {
+                status: 0
+            }
+        );
+        return res.status(200).send("Berhasil Delete Pegawai")
+    }else{
+        return res.status(404).send("Data Pegawai tidak ditemukan")
+    }
+})
 module.exports = router

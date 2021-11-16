@@ -43,10 +43,14 @@ const SignIn = () => {
         console.log(res.data);
         if (res.data.status === "customer") {
           console.log("masuk");
-          encryptStorage.setItem("admin_logged_in", res.data);
+          encryptStorage.setItem("user_logged_in", res.data);
           history.push("/");
         } else if (res.data.status === "admin") {
+          encryptStorage.setItem("admin_logged_in", res.data);
+          history.push("/");
         } else {
+          encryptStorage.setItem("manager_logged_in", res.data);
+          history.push("/");
         }
       })
       .catch((err) => {
