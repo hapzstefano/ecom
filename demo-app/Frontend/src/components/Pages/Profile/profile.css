@@ -1,0 +1,18 @@
+.profile-container {
+  min-height: calc(90vh - var(--navbar-height));
+  margin-top: var(--navbar-height);
+  display: flex;
+  align-items: center;
+}
+.box-profile {
+  border: 1px solid lightgray;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 450px;
+  border-radius: 5px;
+  margin: 0 auto;
+  padding: 1.2em;
+  text-align: center;
+}
+.custom-buttom-center {
+  margin: 0 auto;
+}

@@ -10,6 +10,7 @@ const MasterEmployee = () => {
   const [employeeEmail, setEmployeeEmail] = useState("");
   const [employeePassword, setEmployeePasword] = useState("");
   const [employeePhone, setEmployeePhone] = useState("");
+  const [tempEmployee, setTempEmployee] = useState("");
   const [status, setStatus] = useState("manager");
   const history = useHistory();
 
@@ -35,11 +36,11 @@ const MasterEmployee = () => {
     event.preventDefault();
     axios
       .post(`http://localhost:3001/admin/addPegawai`, {
-        nama:employeeName,
-        email:employeeEmail,
-        password:employeePassword,
-        notlp:employeePhone,
-        jenis:status,
+        nama: employeeName,
+        email: employeeEmail,
+        password: employeePassword,
+        notlp: employeePhone,
+        jenis: status,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
@@ -60,79 +61,96 @@ const MasterEmployee = () => {
     history.push("/masteremployee");
   };
   return (
-    <div className="container-master">
-      <div className="box">
-        <form onSubmit={(e) => handleEmployee(e)}>
-          <div className="form-input">
-            <input
-              type="text"
-              name="employeeName"
-              id="employeeName"
-              value={employeeName}
-              onChange={(e) => setEmployeeName(e.target.value)}
+    <>
+      <div className="container-master">
+        <div className="box">
+          <form onSubmit={(e) => handleEmployee(e)}>
+            <div className="form-input">
+              <input
+                type="text"
+                name="employeeName"
+                id="employeeName"
+                value={employeeName}
+                onChange={(e) => setEmployeeName(e.target.value)}
+              />
+              <label htmlFor="employeeName">
+                <span>Name</span>{" "}
+              </label>
+            </div>
+            <div className="form-input">
+              <input
+                type="email"
+                name="employeeEmail"
+                id="employeeEmail"
+                value={employeeEmail}
+                onChange={(e) => setEmployeeEmail(e.target.value)}
+              />
+              <label htmlFor="employeeEmail">
+                <span>Email</span>{" "}
+              </label>
+            </div>
+            <div className="form-input">
+              <input
+                type="password"
+                name="employeePassword"
+                id="employeePassword"
+                value={employeePassword}
+                onChange={(e) => setEmployeePasword(e.target.value)}
+              />
+              <label htmlFor="employeePassword">
+                <span>Password</span>{" "}
+              </label>
+            </div>
+            <div className="form-input">
+              <input
+                type="text"
+                name="employeePhone"
+                id="employeePhone"
+                value={employeePhone}
+                onChange={(e) => setEmployeePhone(e.target.value)}
+              />
+              <label htmlFor="employeePhone">
+                <span>Phone Number</span>{" "}
+              </label>
+            </div>
+            <div className="form-input">
+              <select
+                name="status"
+                id="status"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="manager">Manager</option>
+                <option value="employee">Employee</option>
+              </select>
+              <label htmlFor="status">
+                <span>Status</span>{" "}
+              </label>
+            </div>
+            <ButtonRipple
+              type="submit"
+              text="Proceed"
+              className="button-submit"
             />
-            <label htmlFor="employeeName">
-              <span>Name</span>{" "}
-            </label>
-          </div>
-          <div className="form-input">
-            <input
-              type="email"
-              name="employeeEmail"
-              id="employeeEmail"
-              value={employeeEmail}
-              onChange={(e) => setEmployeeEmail(e.target.value)}
-            />
-            <label htmlFor="employeeEmail">
-              <span>Email</span>{" "}
-            </label>
-          </div>
-          <div className="form-input">
-            <input
-              type="password"
-              name="employeePassword"
-              id="employeePassword"
-              value={employeePassword}
-              onChange={(e) => setEmployeePasword(e.target.value)}
-            />
-            <label htmlFor="employeePassword">
-              <span>Password</span>{" "}
-            </label>
-          </div>
-          <div className="form-input">
-            <input
-              type="text"
-              name="employeePhone"
-              id="employeePhone"
-              value={employeePhone}
-              onChange={(e) => setEmployeePhone(e.target.value)}
-            />
-            <label htmlFor="employeePhone">
-              <span>Phone Number</span>{" "}
-            </label>
-          </div>
-          <div className="form-input">
-            <select
-              name="status"
-              id="status"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <option value="manager">Manager</option>
-              <option value="employee">Employee</option>
-            </select>
-            <label htmlFor="status">
-              <span>Status</span>{" "}
-            </label>
-          </div>
-          <ButtonRipple
-            type="submit"
-            text="Proceed"
-            className="button-submit"
-          />
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+      <div className="table-container">
+        <h2>List Employee</h2>
+        <table className="content-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+              <th>Position</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </>
   );
 };
 

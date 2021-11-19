@@ -33,13 +33,13 @@ const SignUp = () => {
   const handleSignUp = (e) => {
     e.preventDefault();
     axios
-      .post(`http://localhost:3001/register`,{
-        email:email,
-        nama:name,
-        password:password,
-        confirm:conpass,
-        address:address,
-        phonenum:phonenum,
+      .post(`http://localhost:3001/register`, {
+        email: email,
+        nama: name,
+        password: password,
+        confirm: conpass,
+        address: address,
+        phonenum: phonenum,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
@@ -126,7 +126,7 @@ const SignUp = () => {
               onChange={(e) => setAddress(e.target.value)}
             />
             <label htmlFor="address">
-              <span>Alamat</span>
+              <span>Address</span>
             </label>
           </div>
           <div className="form-input">
@@ -138,7 +138,7 @@ const SignUp = () => {
               onChange={(e) => setPhonenum(e.target.value)}
             />
             <label htmlFor="phonenum">
-              <span>No telp.</span>{" "}
+              <span>Phone Number</span>{" "}
             </label>
           </div>
           <ButtonRipple type="submit" text="Sign Up" />

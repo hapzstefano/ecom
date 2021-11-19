@@ -1,5 +1,5 @@
 .container-master {
-  min-height: calc(100vh - var(--navbar-height));
+  min-height: calc(90vh - var(--navbar-height));
   margin-top: var(--navbar-height);
   display: flex;
   align-items: center;
@@ -9,7 +9,7 @@
   background-color: rgba(0, 0, 0, 0.6);
   width: 450px;
   border-radius: 5px;
-  margin: auto;
+  margin: 0 auto;
   padding: 1.2em;
   text-align: center;
 }
