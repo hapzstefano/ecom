@@ -10,7 +10,9 @@ const MasterMember = () => {
   const [memberName, setMemberName] = useState("");
   const [memberPoin, setMemberPoin] = useState("");
   const [memberDisc, setMemberDisc] = useState("");
-  const [tempMember, setTempMember] = useState([]);
+  const [memberId, setMemberId] = useState("");
+  const [tempMember, setTempMember] = useState([]);  
+  const [activeButton, setActiveButton] = useState("");
   const history = useHistory();
   useEffect(() => {
     axios
@@ -49,16 +51,26 @@ const MasterMember = () => {
     document.title = "Master Member";
   }, []);
   const handleMember = (event) => {
+    let url=`http://localhost:3001/admin/addMember`;
+    if(activeButton == "update"){
+      url = "http://localhost:3001/admin/updateMember/"+memberId;
+    }
+    else if(activeButton == "delete"){
+      url = "http://localhost:3001/admin/deleteMember/"+memberId;
+    }
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/admin/addMember`, {
+      .post(url, {
         nama: memberName,
         minim_poin: memberPoin,
         potongan: memberDisc,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
-        console.log(res.data);
+        setMemberName("");
+        setMemberPoin("");
+        setMemberDisc("");
+        setActiveButton("");
         history.push("/mastermember");
       })
       .catch((err) => {
@@ -74,10 +86,20 @@ const MasterMember = () => {
     console.log(memberDisc);
     history.push("/mastermember");
   };
+  const updateMember = (index) =>{
+    setMemberName(tempMember[index]['nama']);
+    setMemberDisc(tempMember[index]['potongan']);
+    setMemberPoin(tempMember[index]['minimal_poin']);
+    setMemberId(tempMember[index]['_id']);
+    setActiveButton("update");
+  };
   return (
     <>
       <div className="container-master">
         <div className="box">
+        <h1 style={{
+            paddingTop:"0.3em",         
+          }}>Master Member</h1>
           <form onSubmit={(e) => handleMember(e)}>
             <div className="form-input">
               <input
@@ -149,7 +171,7 @@ const MasterMember = () => {
                         justifyContent: "center",
                       }}
                     >
-                      <ButtonRipple text="Update" />
+                      <ButtonRipple text="Update" onClick={(e) => updateMember(index)}/>
                       <ButtonRipple text="Delete" />
                     </td>
                   </tr>

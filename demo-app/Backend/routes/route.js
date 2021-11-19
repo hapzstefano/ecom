@@ -72,7 +72,13 @@ router.post('/login',async (req, res) => {
     else{
         //login buat admin
         const pegawai = await Pegawai.findOne({email: email});
-        
+        if(pegawai){
+            console.log("berhasil login");
+            return res.status(201).send({customer:customer, status:"admin"});
+        }
+        else{
+            console.log("gagal login");
+        }
     }
 })
 

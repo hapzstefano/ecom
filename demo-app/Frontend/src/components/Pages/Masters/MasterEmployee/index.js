@@ -64,6 +64,9 @@ const MasterEmployee = () => {
     <>
       <div className="container-master">
         <div className="box">
+        <h1 style={{
+            paddingTop:"0.3em",         
+          }}>Master Employee</h1>
           <form onSubmit={(e) => handleEmployee(e)}>
             <div className="form-input">
               <input

@@ -8,7 +8,9 @@ import "../master.css";
 import "../table.css";
 const MasterCategory = () => {
   const [cateName, setCateName] = useState("");
+  const [cateId, setCateId] = useState("");
   const [tempCate, setTempCate] = useState([]);
+  const [activeButton, setActiveButton] = useState("");
   const history = useHistory();
   useEffect(() => {
     axios
@@ -47,14 +49,23 @@ const MasterCategory = () => {
     document.title = "Master Category";
   }, []);
   const handleCategory = (event) => {
+    let url=`http://localhost:3001/admin/addCategory`;
+    if(activeButton == "update"){
+      url = "http://localhost:3001/admin/updateCategory/"+cateId;
+    }
+    else if(activeButton == "delete"){
+      url = "http://localhost:3001/admin/deleteCategory/"+cateId;
+    }
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/admin/addCategory`, {
+      .post(url, {
         name: cateName,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
         console.log(res.data);
+        setCateName("");
+        setActiveButton("");
         history.push("/mastercategory");
       })
       .catch((err) => {
@@ -69,10 +80,23 @@ const MasterCategory = () => {
       });
     console.log(cateName);
   };
+  const updateCategory = (index) =>{
+    setCateName(tempCate[index]['nama']);
+    setCateId(tempCate[index]['_id']);
+    setActiveButton("update");
+  };
+  const deleteCategory = (index) =>{
+    setCateName(tempCate[index]['nama']);
+    setCateId(tempCate[index]['_id']);
+    setActiveButton("delete");
+  };
   return (
     <>
       <div className="container-master">
         <div className="box">
+        <h1 style={{
+            paddingTop:"0.3em",         
+          }}>Master Category</h1>
           <form onSubmit={(e) => handleCategory(e)}>
             <div className="form-input">
               <input
@@ -110,8 +134,8 @@ const MasterCategory = () => {
                   <tr>
                     <td>{props.nama}</td>
                     <td style={{ display: "flex", justifyContent: "center" }}>
-                      <ButtonRipple text="Update" />
-                      <ButtonRipple text="Delete" />
+                      <ButtonRipple text="Update" onClick={(e) => updateCategory(index)}/>
+                      <ButtonRipple text="Delete" onClick={(e) => deleteCategory(index)}/>
                     </td>
                   </tr>
                 );
