@@ -38,7 +38,7 @@ const Footer = () => {
       <section>
         <div>
           <span className="copyright">
-            copyright 2021 rift inc. all rights reserved.
+            copyright 2021 HapzComputer inc. all rights reserved.
           </span>
           &nbsp;
           <span>privacy policy</span> | <span>terms of use</span> |{" "}

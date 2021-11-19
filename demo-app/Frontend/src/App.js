@@ -24,6 +24,8 @@ import MasterStock from "./components/Pages/Masters/MasterStock";
 import ConfirmOrder from "./components/Pages/ConfirmOrder";
 import Profile from "./components/Pages/Profile";
 import ForgetPassword from "./components/Pages/ForgetPassword";
+import Cart from "./components/Pages/Cart";
+import Wishlist from "./components/Pages/Wishlist";
 
 function App() {
   useEffect(() => {
@@ -90,6 +92,16 @@ function App() {
         <Route exact path="/profile">
           <Navbar />
           <Profile />
+          <Footer />
+        </Route>
+        <Route exact path="/cart">
+          <Navbar />
+          <Cart />
+          <Footer />
+        </Route>
+        <Route exact path="/wishlist">
+          <Navbar />
+          <Wishlist />
           <Footer />
         </Route>
         <Route exact path="/home">
