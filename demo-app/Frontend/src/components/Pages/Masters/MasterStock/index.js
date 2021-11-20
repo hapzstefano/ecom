@@ -34,7 +34,7 @@ const MasterStock = () => {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
-        console.log(res.data);
+        console.log("nama brand: " + res.data[0].brands[0]["nama"]);
         setTempStock(res.data);
       })
       .catch((err) => {
@@ -149,6 +149,8 @@ const MasterStock = () => {
     setStockQty(tempStock[index]['stok']);
     setStockImg(tempStock[index]['gambar']);
     setStockId(tempStock[index]['_id']);
+    setStockBrand(tempStock[index]['brand']);
+    setStockCategory(tempStock[index]['category']);
     setActiveButton("update");
   };
   return (
@@ -276,9 +278,9 @@ const MasterStock = () => {
                     <td>{props.nama}</td>
                     <td>{props.harga}</td>
                     <td>{props.stok}</td>
-                    <td>{props.gambar}</td>
-                    <td>{props.category}</td>
-                    <td>{props.brand}</td>
+                    <td><img src={props.gambar} alt={props.nama} style={{ width:"8rem", aspectRatio:"1/1", objectFit:"contain", }}/></td>
+                    <td>{props.categorys[0]["nama"]}</td>
+                    <td>{props.brands[0]["nama"]}</td>
                     <td style={{ display: "flex" }}>
                       <ButtonRipple text="Update" onClick={(e) => updateStock(index)}/>
                       <ButtonRipple text="Delete" />

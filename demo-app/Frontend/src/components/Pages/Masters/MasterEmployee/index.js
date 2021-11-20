@@ -10,11 +10,31 @@ const MasterEmployee = () => {
   const [employeeEmail, setEmployeeEmail] = useState("");
   const [employeePassword, setEmployeePasword] = useState("");
   const [employeePhone, setEmployeePhone] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
   const [tempEmployee, setTempEmployee] = useState("");
   const [status, setStatus] = useState("manager");
+  const [activeButton, setActiveButton] = useState("");
   const history = useHistory();
 
   useEffect(() => {
+    axios
+      .get(`http://localhost:3001/admin/getAllPegawai`, {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setTempEmployee(res.data);
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
     $("input").each(function () {
       if ($(this).val().length > 0) {
         $(this).addClass("not-empty");
@@ -33,9 +53,16 @@ const MasterEmployee = () => {
     document.title = "Master Employee";
   }, []);
   const handleEmployee = (event) => {
+    let url=`http://localhost:3001/admin/addPegawai`;
+    if(activeButton == "update"){
+      url = "http://localhost:3001/admin/updatePegawai/"+employeeId;
+    }
+    else if(activeButton == "delete"){
+      url = "http://localhost:3001/admin/deletePegawai/"+employeeId;
+    }
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/admin/addPegawai`, {
+      .post(url, {
         nama: employeeName,
         email: employeeEmail,
         password: employeePassword,
@@ -59,6 +86,14 @@ const MasterEmployee = () => {
       });
     console.log(status);
     history.push("/masteremployee");
+  };
+  const updateEmployee = (index) =>{
+    setEmployeeName(tempEmployee[index]['nama']);
+    setEmployeeEmail(tempEmployee[index]['email']);
+    setEmployeePhone(tempEmployee[index]['notlp']);
+    setEmployeePasword(tempEmployee[index]['password']);
+    setEmployeeId(tempEmployee[index]['_id']);
+    setActiveButton("update");
   };
   return (
     <>
@@ -150,7 +185,22 @@ const MasterEmployee = () => {
               <th>Action</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {tempEmployee &&
+              tempEmployee.map((props, index) => {
+                return (
+                  <tr>
+                    <td>{props.nama}</td>
+                    <td>{props.email}</td>
+                    <td>{props.notlp}</td>
+                    <td style={{ display: "flex", justifyContent: "center" }}>
+                      <ButtonRipple text="Update" onClick={(e) => updateEmployee(index)}/>
+                      <ButtonRipple text="Delete" />
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
         </table>
       </div>
     </>

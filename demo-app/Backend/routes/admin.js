@@ -26,8 +26,8 @@ const barangStorage = multer.diskStorage({
                 "harga": req.body.price,
                 "stok": req.body.stok,
                 "status":1,
-                "kategori": category._id ,
-                "brand": brand._id
+                "kategori": mongoose.Types.ObjectId(category._id) ,
+                "brand": mongoose.Types.ObjectId(brand._id)
             })
             callback(null, (req.params._id + '.' + extension));
         }
@@ -38,14 +38,14 @@ const barangStorage = multer.diskStorage({
                 "stok": req.body.stok,
                 "gambar":"../uploads/barang/",
                 "status":1,
-                "kategori": category._id ,
-                "brand": brand._id
+                "kategori": mongoose.Types.ObjectId(category._id) ,
+                "brand": mongoose.Types.ObjectId(brand._id)
             })
             let _id
             barang.save(async function (err, inserted) {
                 if (err) return console.error(err);
                 _id = inserted._id
-                await BarangModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/barang"+_id+"."+extension})
+                await BarangModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/barang/"+_id+"."+extension})
                 callback(null, (_id + '.' + extension));
             });
             
@@ -159,7 +159,30 @@ router.post('/deleteBrand/:_id', async (req,res) => {
 })
 
 router.get('/getAllBarang', async (req,res)=>{
-    const barang = await BarangModel.find();
+    //const barang = await BarangModel.find();
+    const barang = await BarangModel.aggregate([
+        {
+            $lookup:
+              {
+                from: "brands",
+                localField: "brand",
+                foreignField: "_id",
+                as: "brands"
+              }
+          },
+          {
+              $lookup:
+              {
+                  from: "category",
+                  localField: "kategori",
+                  foreignField: "_id",
+                  as: "categorys"
+              }
+          },
+          {
+            $sort:{name: 1}
+          }
+        ])
     return res.status(200).json(barang)
 })
 
