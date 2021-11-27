@@ -55,9 +55,6 @@ const MasterMember = () => {
     if(activeButton == "update"){
       url = "http://localhost:3001/admin/updateMember/"+memberId;
     }
-    else if(activeButton == "delete"){
-      url = "http://localhost:3001/admin/deleteMember/"+memberId;
-    }
     axios
       .post(url, {
         nama: memberName,
@@ -95,6 +92,27 @@ const MasterMember = () => {
     setMemberId(tempMember[index]['_id']);
     setActiveButton("update");
     window.scrollTo(0,0);
+  };
+  
+  const deleteMember = (index) =>{
+    axios
+      .post("http://localhost:3001/admin/deleteMember/"+tempMember[index]['_id'], {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        history.push("/mastermember");
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
+    
   };
   return (
     <>
@@ -175,7 +193,9 @@ const MasterMember = () => {
                       }}
                     >
                       <ButtonRipple text="Update" onClick={(e) => updateMember(index)}/>
-                      <ButtonRipple text="Delete" />
+                      <form onSubmit={(e) => deleteMember(index)}>
+                        <ButtonRipple type="submit" text="Delete"/>
+                      </form>
                     </td>
                   </tr>
                 );

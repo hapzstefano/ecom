@@ -62,15 +62,11 @@ const MasterBrand = () => {
     if(activeButton == "update"){
       url = "http://localhost:3001/admin/updateBrand/"+brandId;
     }
-    else if(activeButton == "delete"){
-      url = "http://localhost:3001/admin/deleteBrand/"+brandId;
-    }
     const formData = generateFormData({
       name: brandName,
       description: brandDesc,
       image: brandImg,
     });
-    event.preventDefault();
     axios
       .post(url, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -107,11 +103,26 @@ const MasterBrand = () => {
     window.scrollTo(0,0);
   };
   const deleteBrand = (index) =>{
-    setBrandName(tempBrand[index]['nama']);
-    setBrandDesc(tempBrand[index]['deskripsi']);
-    setBrandImg(tempBrand[index]['gambar']);
     setBrandId(tempBrand[index]['_id']);
-    setActiveButton("delete");
+    axios
+      .post("http://localhost:3001/admin/deleteBrand/"+tempBrand[index]['_id'], {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        //console.log(res.data);
+        history.push("/masterbrand");
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
+    history.push("/masterbrand");
   };
   return (
     <>
@@ -188,7 +199,9 @@ const MasterBrand = () => {
                       }}
                     >
                       <ButtonRipple text="Update" onClick={(e) => updateBrand(index)}/>
-                      <ButtonRipple text="Delete" onClick={(e) => deleteBrand(index)}/>
+                      <form onSubmit={(e) => deleteBrand(index)}>
+                      <ButtonRipple type="submit" text="Delete" />
+                      </form>
                     </td>
                   </tr>
                 );

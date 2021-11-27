@@ -53,9 +53,7 @@ const MasterCategory = () => {
     if(activeButton == "update"){
       url = "http://localhost:3001/admin/updateCategory/"+cateId;
     }
-    else if(activeButton == "delete"){
-      url = "http://localhost:3001/admin/deleteCategory/"+cateId;
-    }
+    console.log("masuk");
     axios
       .post(url, {
         name: cateName,
@@ -87,9 +85,26 @@ const MasterCategory = () => {
     window.scrollTo(0,0);
   };
   const deleteCategory = (index) =>{
-    setCateName(tempCate[index]['nama']);
     setCateId(tempCate[index]['_id']);
-    setActiveButton("delete");
+    console.log("masuk delete");
+    axios
+      .post("http://localhost:3001/admin/deleteCategory/"+tempCate[index]['_id'], {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        history.push("/mastercategory");
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
   };
   return (
     <>
@@ -136,7 +151,9 @@ const MasterCategory = () => {
                     <td>{props.nama}</td>
                     <td style={{ display: "flex", justifyContent: "center" }}>
                       <ButtonRipple text="Update" onClick={(e) => updateCategory(index)}/>
-                      <ButtonRipple text="Delete" onClick={(e) => deleteCategory(index)}/>
+                      <form onSubmit={(e) => deleteCategory(index)}>
+                      <ButtonRipple type="submit" text="Delete" />
+                      </form>
                     </td>
                   </tr>
                 );

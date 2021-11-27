@@ -187,12 +187,12 @@ router.get('/getAllBarang', async (req,res)=>{
 })
 
 router.get('/getAllCategory', async (req,res)=>{
-    const category = await CategoryModel.find();
+    const category = await CategoryModel.find({status:1});
     return res.status(200).json(category)
 })
 
 router.get('/getAllBrand', async (req,res)=>{
-    const brand = await BrandModel.find();
+    const brand = await BrandModel.find({status:1});
     return res.status(200).json(brand)
 })
 
@@ -265,7 +265,7 @@ router.post('/updateMember/:id', async (req,res) =>{
     }
 })
 
-router.delete('/deleteMember/:idMemberDelete', async (req,res) =>{
+router.post('/deleteMember/:idMemberDelete', async (req,res) =>{
     const idMemberDelete = req.params.idMemberDelete
     const dataMember = await MemberModel.findOne({_id: new mongoose.Types.ObjectId(idMemberDelete)});
     if(dataMember){
@@ -282,7 +282,7 @@ router.delete('/deleteMember/:idMemberDelete', async (req,res) =>{
 })
 
 router.get('/getAllMember', async (req,res)=>{
-    const dataMember = await MemberModel.find();
+    const dataMember = await MemberModel.find({status:1});
     return res.status(200).json(dataMember)
 })
 
@@ -348,7 +348,7 @@ router.post('/updatePromo/:idPromo', async (req,res) =>{
     
 })
 
-router.delete('/deletePromo/:idpromoDelete', async (req,res) =>{
+router.post('/deletePromo/:idpromoDelete', async (req,res) =>{
     const idPromoDelete = req.params.idpromoDelete
     const dataPromo = await PromoModel.findOne({_id: new mongoose.Types.ObjectId(idPromoDelete)});
     if(dataPromo){
@@ -365,7 +365,7 @@ router.delete('/deletePromo/:idpromoDelete', async (req,res) =>{
 })
 
 router.get('/getAllPromo', async (req,res)=>{
-    const dataPromo = await PromoModel.find();
+    const dataPromo = await PromoModel.find({status:1});
     return res.status(200).json(dataPromo)
 })
 
@@ -389,7 +389,7 @@ router.get('/getPromoById/:id', async (req,res)=>{
 
 //master pegawai/employee
 router.get('/getAllPegawai', async (req,res)=>{
-    const dataPegawai = await PegawaiModel.find();
+    const dataPegawai = await PegawaiModel.find({status:1});
     return res.status(200).json(dataPegawai)
 })
 router.post('/addPegawai',async (req,res) => {
@@ -447,7 +447,7 @@ router.post('/updatePegawai/:idPegawai', async (req,res) =>{
     
 })
 
-router.delete('/deletePegawai/:idpegawaiDelete', async (req,res) =>{
+router.post('/deletePegawai/:idpegawai', async (req,res) =>{
     const idPegawaiDelete = req.params.idpegawai;
     const dataPegawai = await PegawaiModel.findOne({_id: new mongoose.Types.ObjectId(idPegawaiDelete)});
     if(dataPegawai){

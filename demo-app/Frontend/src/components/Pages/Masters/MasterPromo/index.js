@@ -59,7 +59,6 @@ const MasterPromo = () => {
     else if(activeButton == "delete"){
       url = "http://localhost:3001/admin/deletePromo/"+promoId;
     }
-    event.preventDefault();
     axios
       .post(url, {
         namaPromo: promoName,
@@ -102,6 +101,26 @@ const MasterPromo = () => {
     setPromoId(tempPromo[index]['_id']);
     setActiveButton("update");
     window.scrollTo(0,0);
+  };
+  const deletePromo = (index) =>{
+    axios
+      .post("http://localhost:3001/admin/deletePromo/"+tempPromo[index]['_id'], {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        history.push("/masterpromo");
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
   };
   return (
     <>
@@ -198,7 +217,9 @@ const MasterPromo = () => {
                       }}
                     >
                       <ButtonRipple text="Update" onClick={(e) => updatePromo(index)}/>
-                      <ButtonRipple text="Delete" />
+                      <form onSubmit={(e) => deletePromo(index)}>
+                        <ButtonRipple type="submit" text="Delete" />
+                      </form>
                     </td>
                   </tr>
                 );
