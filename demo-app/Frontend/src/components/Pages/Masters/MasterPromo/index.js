@@ -4,6 +4,7 @@ import axios from "axios";
 import { EncryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
 import ButtonRipple from "../../../ButtonRipple";
+import Moment from 'moment';
 import "../master.css";
 import "../table.css";
 const MasterPromo = () => {
@@ -11,7 +12,9 @@ const MasterPromo = () => {
   const [promoStart, setPromoStart] = useState("");
   const [promoEnd, setPromoEnd] = useState("");
   const [promoDisc, setPromoDisc] = useState("");
+  const [promoId, setPromoId] = useState("");
   const [tempPromo, setTempPromo] = useState([]);
+  const [activeButton, setActiveButton] = useState("");
   const history = useHistory();
   useEffect(() => {
     axios
@@ -49,9 +52,16 @@ const MasterPromo = () => {
     document.title = "Master Promo";
   }, []);
   const handlePromo = (event) => {
+    let url=`http://localhost:3001/admin/addPromo`;
+    if(activeButton == "update"){
+      url = "http://localhost:3001/admin/updatePromo/"+promoId;
+    }
+    else if(activeButton == "delete"){
+      url = "http://localhost:3001/admin/deletePromo/"+promoId;
+    }
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/admin/addPromo`, {
+      .post(url, {
         namaPromo: promoName,
         tglAwalPromo: promoStart,
         tglAkhirPromo: promoEnd,
@@ -60,7 +70,12 @@ const MasterPromo = () => {
       })
       .then((res) => {
         console.log(res.data);
-        history.push("/mastercategory");
+        setPromoName("");
+        setPromoStart("");
+        setPromoEnd("");
+        setPromoDisc("");
+        setActiveButton("");
+        history.push("/masterpromo");
       })
       .catch((err) => {
         //error
@@ -75,10 +90,21 @@ const MasterPromo = () => {
     console.log(promoEnd);
     history.push("/masterpromo");
   };
+  const updatePromo = (index) =>{
+    setPromoName(tempPromo[index]['nama']);
+    setPromoStart(Moment(tempPromo[index]['tanggal_awal']).format("YYYY-MM-DD"));
+    setPromoEnd(Moment(tempPromo[index]['tanggal_akhir']).format("YYYY-MM-DD"));
+    setPromoDisc(tempPromo[index]['potongan']);    
+    setPromoId(tempPromo[index]['_id']);
+    setActiveButton("update");
+  };
   return (
     <>
       <div className="container-master">
         <div className="box">
+        <h1 style={{
+            paddingTop:"0.3em",         
+          }}>Master Promo</h1>
           <form onSubmit={(e) => handlePromo(e)}>
             <div className="form-input">
               <input
@@ -156,8 +182,8 @@ const MasterPromo = () => {
                 return (
                   <tr>
                     <td>{props.nama}</td>
-                    <td>{props.tanggal_awal}</td>
-                    <td>{props.tanggal_akhir}</td>
+                    <td>{Moment(props.tanggal_awal).format('DD/MM/YYYY')}</td>
+                    <td>{Moment(props.tanggal_akhir).format('DD/MM/YYYY')}</td>
                     <td>{props.potongan}</td>
                     <td
                       style={{
@@ -166,7 +192,7 @@ const MasterPromo = () => {
                         justifyContent: "center",
                       }}
                     >
-                      <ButtonRipple text="Update" />
+                      <ButtonRipple text="Update" onClick={(e) => updatePromo(index)}/>
                       <ButtonRipple text="Delete" />
                     </td>
                   </tr>

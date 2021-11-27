@@ -10,7 +10,9 @@ const MasterBrand = () => {
   const [brandName, setBrandName] = useState("");
   const [brandDesc, setBrandDesc] = useState("");
   const [brandImg, setBrandImg] = useState("");
+  const [brandId, setBrandId] = useState("");
   const [brandReadyImg, setBrandReadyImg] = useState("");
+  const [activeButton, setActiveButton] = useState("");
   const [tempBrand, setTempBrand] = useState([]);
   const history = useHistory();
 
@@ -56,6 +58,13 @@ const MasterBrand = () => {
     document.title = "Master Brand";
   }, []);
   const handleBrand = (event) => {
+    let url=`http://localhost:3001/admin/addBrand`;
+    if(activeButton == "update"){
+      url = "http://localhost:3001/admin/updateBrand/"+brandId;
+    }
+    else if(activeButton == "delete"){
+      url = "http://localhost:3001/admin/deleteBrand/"+brandId;
+    }
     const formData = generateFormData({
       name: brandName,
       description: brandDesc,
@@ -63,12 +72,17 @@ const MasterBrand = () => {
     });
     event.preventDefault();
     axios
-      .post(`http://localhost:3001/admin/addBrand`, formData, {
+      .post(url, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
-        console.log(res.data);
-        history.push("/mastercategory");
+        //console.log(res.data);
+        setBrandName("");
+        setBrandDesc("");
+        setBrandImg("");
+        setActiveButton("");
+        setBrandReadyImg("");
+        history.push("/masterbrand");
       })
       .catch((err) => {
         //error
@@ -80,13 +94,29 @@ const MasterBrand = () => {
           console.log("Error", err.message);
         }
       });
-    console.log(brandImg);
     history.push("/masterbrand");
+  };
+  const updateBrand = (index) =>{
+    setBrandName(tempBrand[index]['nama']);
+    setBrandDesc(tempBrand[index]['deskripsi']);
+    setBrandImg(tempBrand[index]['gambar']);
+    setBrandId(tempBrand[index]['_id']);
+    setActiveButton("update");
+  };
+  const deleteBrand = (index) =>{
+    setBrandName(tempBrand[index]['nama']);
+    setBrandDesc(tempBrand[index]['deskripsi']);
+    setBrandImg(tempBrand[index]['gambar']);
+    setBrandId(tempBrand[index]['_id']);
+    setActiveButton("delete");
   };
   return (
     <>
       <div className="container-master">
         <div className="box">
+          <h1 style={{
+            paddingTop:"0.3em",         
+          }}>Master Brand</h1>
           <form onSubmit={(e) => handleBrand(e)}>
             <div className="form-input">
               <input
@@ -154,8 +184,8 @@ const MasterBrand = () => {
                         alignItems: "center",
                       }}
                     >
-                      <ButtonRipple text="Update" />
-                      <ButtonRipple text="Delete" />
+                      <ButtonRipple text="Update" onClick={(e) => updateBrand(index)}/>
+                      <ButtonRipple text="Delete" onClick={(e) => deleteBrand(index)}/>
                     </td>
                   </tr>
                 );

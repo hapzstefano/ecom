@@ -70,9 +70,20 @@ router.post('/login',async (req, res) => {
         }
     }
     else{
-        //login buat admin
+        //login buat admin, untuk admin jenis = 2
         const pegawai = await Pegawai.findOne({email: email});
-        
+        if(pegawai){
+            console.log("berhasil login");
+            if(pegawai.jenis == 1){
+                return res.status(201).send({customer:customer, status:"admin"});
+            }
+            else{
+                return res.status(201).send({customer:customer, status:"manager"});
+            }
+        }
+        else{
+            console.log("gagal login");
+        }
     }
 })
 
@@ -101,8 +112,32 @@ router.post('/addBarang', async (req,res) => {
    
 
 router.post('/test', async (req,res) => {
-    const customer = await Customer.findOne({email: req.body.email }).populate('member');
-    return res.status(200).send({"customer" : customer});
+    const barang = await Barang.find().populate('brands');
+    const post = await Barang.aggregate([
+        {
+          $lookup:
+            {
+              from: "brands",
+              localField: "brand",
+              foreignField: "_id",
+              as: "brands"
+            }
+        },
+        {
+            $lookup:
+            {
+                from: "category",
+                localField: "id_kategori",
+                foreignField: "_id",
+                as: "categorys"
+            }
+        },
+        {
+          $sort:{name: 1}
+        }
+      ])
+    //const hasil = post[0].barangs[0].nama;
+    return res.status(200).send({post});
 })
 router.post('/testInsert', async (req,res) => {
     const barang = await Barang.insertMany({email: req.body.email });

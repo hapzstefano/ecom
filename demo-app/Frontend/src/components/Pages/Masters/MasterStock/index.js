@@ -15,6 +15,8 @@ const MasterStock = () => {
   const [stockBrand, setStockBrand] = useState("");
   const [stockCategory, setStockCategory] = useState("");
   const [stockReadyImg, setStockReadyImg] = useState("");
+  const [stockId, setStockId] = useState("");
+  const [activeButton, setActiveButton] = useState("");
   const [tempBrand, setTempBrand] = useState([]);
   const [tempCate, setTempCate] = useState([]);
   const [tempStock, setTempStock] = useState([]);
@@ -32,7 +34,7 @@ const MasterStock = () => {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
-        console.log(res.data);
+        console.log("nama brand: " + res.data[0].brands[0]["nama"]);
         setTempStock(res.data);
       })
       .catch((err) => {
@@ -101,6 +103,13 @@ const MasterStock = () => {
     document.title = "Master Stock";
   }, []);
   const handleStock = (e) => {
+    let url=`http://localhost:3001/admin/addBarang`;
+    if(activeButton == "update"){
+      url = "http://localhost:3001/admin/updateBarang/"+stockId;
+    }
+    else if(activeButton == "delete"){
+      url = "http://localhost:3001/admin/deleteBarang/"+stockId;
+    }
     const formData = generateFormData({
       name: stockName,
       price: stockPrice,
@@ -111,10 +120,13 @@ const MasterStock = () => {
     });
     e.preventDefault();
     axios
-      .post(`http://localhost:3001/admin/addBarang`, formData, {
+      .post(url, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
+        setStockName("");
+        setStockPrice("");
+        setStockQty("");
         console.log(res.data);
         history.push("/masterstock");
       })
@@ -131,10 +143,23 @@ const MasterStock = () => {
     console.log(stockImg);
     history.push("/masterstock");
   };
+  const updateStock = (index) =>{
+    setStockName(tempStock[index]['nama']);
+    setStockPrice(tempStock[index]['harga']);
+    setStockQty(tempStock[index]['stok']);
+    setStockImg(tempStock[index]['gambar']);
+    setStockId(tempStock[index]['_id']);
+    setStockBrand(tempStock[index]['brand']);
+    setStockCategory(tempStock[index]['category']);
+    setActiveButton("update");
+  };
   return (
     <>
       <div className="container-master">
         <div className="box">
+        <h1 style={{
+            paddingTop:"0.3em",         
+          }}>Master Stock</h1>
           <form onSubmit={(e) => handleStock(e)}>
             <div className="form-input">
               <input
@@ -253,11 +278,11 @@ const MasterStock = () => {
                     <td>{props.nama}</td>
                     <td>{props.harga}</td>
                     <td>{props.stok}</td>
-                    <td>{props.gambar}</td>
-                    <td>{props.category}</td>
-                    <td>{props.brand}</td>
+                    <td><img src={props.gambar} alt={props.nama} style={{ width:"8rem", aspectRatio:"1/1", objectFit:"contain", }}/></td>
+                    <td>{props.categorys[0]["nama"]}</td>
+                    <td>{props.brands[0]["nama"]}</td>
                     <td style={{ display: "flex" }}>
-                      <ButtonRipple text="Update" />
+                      <ButtonRipple text="Update" onClick={(e) => updateStock(index)}/>
                       <ButtonRipple text="Delete" />
                     </td>
                   </tr>

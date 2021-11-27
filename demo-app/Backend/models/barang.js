@@ -11,7 +11,7 @@ const barangSchema = new mongoose.Schema({
         ref: "kategori",
         required: true
     },
-    brand: {
+    brands: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "brand",
         required: true

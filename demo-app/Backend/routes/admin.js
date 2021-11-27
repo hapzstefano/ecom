@@ -26,8 +26,8 @@ const barangStorage = multer.diskStorage({
                 "harga": req.body.price,
                 "stok": req.body.stok,
                 "status":1,
-                "kategori": category._id ,
-                "brand": brand._id
+                "kategori": mongoose.Types.ObjectId(category._id) ,
+                "brand": mongoose.Types.ObjectId(brand._id)
             })
             callback(null, (req.params._id + '.' + extension));
         }
@@ -38,14 +38,14 @@ const barangStorage = multer.diskStorage({
                 "stok": req.body.stok,
                 "gambar":"../uploads/barang/",
                 "status":1,
-                "kategori": category._id ,
-                "brand": brand._id
+                "kategori": mongoose.Types.ObjectId(category._id) ,
+                "brand": mongoose.Types.ObjectId(brand._id)
             })
             let _id
             barang.save(async function (err, inserted) {
                 if (err) return console.error(err);
                 _id = inserted._id
-                await BarangModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/barang"+_id+"."+extension})
+                await BarangModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/barang/"+_id+"."+extension})
                 callback(null, (_id + '.' + extension));
             });
             
@@ -60,6 +60,7 @@ const brandStorage = multer.diskStorage({
     filename: async function(req, file, callback) {
         const extension = file.originalname.split('.')[file.originalname.split('.').length - 1];
         const check = await BrandModel.findOne({nama: req.body.name}) 
+        console.log(req.body);
         if (check){
             const brand = await BrandModel.findOneAndUpdate({_id: req.params._id},{
                 "nama" : req.body.name,
@@ -158,7 +159,30 @@ router.post('/deleteBrand/:_id', async (req,res) => {
 })
 
 router.get('/getAllBarang', async (req,res)=>{
-    const barang = await BarangModel.find();
+    //const barang = await BarangModel.find();
+    const barang = await BarangModel.aggregate([
+        {
+            $lookup:
+              {
+                from: "brands",
+                localField: "brand",
+                foreignField: "_id",
+                as: "brands"
+              }
+          },
+          {
+              $lookup:
+              {
+                  from: "category",
+                  localField: "kategori",
+                  foreignField: "_id",
+                  as: "categorys"
+              }
+          },
+          {
+            $sort:{name: 1}
+          }
+        ])
     return res.status(200).json(barang)
 })
 
@@ -209,7 +233,7 @@ router.post('/addMember',async (req,res) => {
         const newMember = new MemberModel({
             "nama" : req.body.nama,
             "minimal_poin": req.body.minim_poin,
-            "potongan": req.body.potongan,
+            "potongan":  req.body.potongan,
             "status": 1
         })
         newMember.save(async function (err, inserted) {
@@ -220,19 +244,19 @@ router.post('/addMember',async (req,res) => {
     }
 })
 
-router.put('/updateMember/:id', async (req,res) =>{
-    const idMember = req.params.id
-    const namaBaru = req.body.namaBaru
-    const minimPoinBaru = req.body.minimPoinBaru
-    const potonganBaru = req.body.potonganBaru
+router.post('/updateMember/:id', async (req,res) =>{
+    const idMember = req.params.id;
+    const namaBaru = req.body.nama;
+    const minimPoinBaru = req.body.minim_poin;
+    const potonganBaru = req.body.potongan;
     const dataMember = await MemberModel.findOne({_id: new mongoose.Types.ObjectId(idMember)});
     if(dataMember){
         await MemberModel.findOneAndUpdate(
             {_id: new mongoose.Types.ObjectId(idMember)},
             {
-                nama: namaBaru,
-                minimal_poin: minimPoinBaru,
-                potongan : potonganBaru
+                "nama": namaBaru,
+                "minimal_poin": minimPoinBaru,
+                "potongan" : potonganBaru
             }
         );
         return res.status(200).send("Berhasil Update Member")
@@ -248,7 +272,7 @@ router.delete('/deleteMember/:idMemberDelete', async (req,res) =>{
         await MemberModel.findOneAndUpdate(
             {_id: new mongoose.Types.ObjectId(idMemberDelete)},
             {
-                status : 0
+                "status" : 0
             }
         );
         return res.status(200).send("Berhasil Delete Member")
@@ -300,21 +324,21 @@ router.post('/addPromo',async (req,res) => {
     }
 })
 
-router.put('/updatePromo/:idPromo', async (req,res) =>{
+router.post('/updatePromo/:idPromo', async (req,res) =>{
     const idpromo = req.params.idPromo
-    const namaBaru = req.body.namaPromoBaru
-    const tglAwalBaru = req.body.tglAwalBaru
-    const tglAkhirBaru = req.body.tglAkhirBaru
-    const potonganBaru = req.body.potonganPromoBaru
+    const namaBaru = req.body.namaPromo
+    const tglAwalBaru = req.body.tglAwalPromo
+    const tglAkhirBaru = req.body.tglAkhirPromo
+    const potonganBaru = req.body.potongan
     const dataPromo = await PromoModel.findOne({_id: new mongoose.Types.ObjectId(idpromo)});
     if(dataPromo){
         await PromoModel.findOneAndUpdate(
             {_id: new mongoose.Types.ObjectId(idpromo)},
             {
-                nama: namaBaru,
-                tanggal_awal: new Date(tglAwalBaru),
-                tanggal_akhir: new Date(tglAkhirBaru),
-                potongan: potonganBaru
+                "nama": namaBaru,
+                "tanggal_awal": new Date(tglAwalBaru),
+                "tanggal_akhir": new Date(tglAkhirBaru),
+                "potongan": potonganBaru
             }
         );
         return res.status(200).send("Berhasil Update Promo")
@@ -331,7 +355,7 @@ router.delete('/deletePromo/:idpromoDelete', async (req,res) =>{
         await PromoModel.findOneAndUpdate(
             {_id: new mongoose.Types.ObjectId(idPromoDelete)},
             {
-                status: 0
+                "status": 0
             }
         );
         return res.status(200).send("Berhasil Delete Promo")
@@ -364,6 +388,10 @@ router.get('/getPromoById/:id', async (req,res)=>{
 })
 
 //master pegawai/employee
+router.get('/getAllPegawai', async (req,res)=>{
+    const dataPegawai = await PegawaiModel.find();
+    return res.status(200).json(dataPegawai)
+})
 router.post('/addPegawai',async (req,res) => {
     const dataPegawai = await PegawaiModel.findOne({nama: req.body.nama});
     console.log(req.body);
@@ -390,22 +418,26 @@ router.post('/addPegawai',async (req,res) => {
     }
 })
 
-router.put('/updatePegawai/:idPegawai', async (req,res) =>{
+router.post('/updatePegawai/:idPegawai', async (req,res) =>{
     const idpegawai = req.params.idPegawai;
     const nama = req.body.nama;
     const email = req.body.email;
     const password = req.body.password;
     const notlp = req.body.notlp;
+    let jenis= 1;
+    if(req.body.jenis == "employee"){
+        jenis = 2;
+    }
     const dataPegawai = await PegawaiModel.findOne({_id: new mongoose.Types.ObjectId(idpegawai)});
     if(dataPegawai){
         await PegawaiModel.findOneAndUpdate(
             {_id: new mongoose.Types.ObjectId(idpegawai)},
             {
-                nama: nama,
-                email: email,
-                password: password,
-                notlp: notlp,
-                potongan: potonganBaru
+                "nama": nama,
+                "email": email,
+                "password": password,
+                "notlp": notlp,
+                "jenis": jenis,
             }
         );
         return res.status(200).send("Berhasil Update Pegawai");
@@ -415,7 +447,7 @@ router.put('/updatePegawai/:idPegawai', async (req,res) =>{
     
 })
 
-router.delete('/deletePromo/:idpromoDelete', async (req,res) =>{
+router.delete('/deletePegawai/:idpegawaiDelete', async (req,res) =>{
     const idPegawaiDelete = req.params.idpegawai;
     const dataPegawai = await PegawaiModel.findOne({_id: new mongoose.Types.ObjectId(idPegawaiDelete)});
     if(dataPegawai){
