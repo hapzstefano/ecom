@@ -144,6 +144,11 @@ const MasterStock = () => {
     history.push("/masterstock");
   };
   const updateStock = (index) =>{
+    document.querySelector("#stockName").classList.add("not-empty");
+    document.querySelector("#stockPrice").classList.add("not-empty");
+    document.querySelector("#stockQty").classList.add("not-empty");
+    document.querySelector("#stockBrand").classList.add("not-empty");
+    document.querySelector("#stockCategory").classList.add("not-empty");
     setStockName(tempStock[index]['nama']);
     setStockPrice(tempStock[index]['harga']);
     setStockQty(tempStock[index]['stok']);
@@ -152,6 +157,7 @@ const MasterStock = () => {
     setStockBrand(tempStock[index]['brand']);
     setStockCategory(tempStock[index]['category']);
     setActiveButton("update");
+    window.scrollTo(0,0);
   };
   return (
     <>
@@ -281,7 +287,7 @@ const MasterStock = () => {
                     <td><img src={props.gambar} alt={props.nama} style={{ width:"8rem", aspectRatio:"1/1", objectFit:"contain", }}/></td>
                     <td>{props.categorys[0]["nama"]}</td>
                     <td>{props.brands[0]["nama"]}</td>
-                    <td style={{ display: "flex" }}>
+                    <td style={{ display: "flex", alignItems: "center", justifyContent:"center", height:"9.7rem" }}>
                       <ButtonRipple text="Update" onClick={(e) => updateStock(index)}/>
                       <ButtonRipple text="Delete" />
                     </td>

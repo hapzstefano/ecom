@@ -97,11 +97,14 @@ const MasterBrand = () => {
     history.push("/masterbrand");
   };
   const updateBrand = (index) =>{
+    document.querySelector("#brandName").classList.add("not-empty");
+    document.querySelector("#brandDesc").classList.add("not-empty");
     setBrandName(tempBrand[index]['nama']);
     setBrandDesc(tempBrand[index]['deskripsi']);
     setBrandImg(tempBrand[index]['gambar']);
     setBrandId(tempBrand[index]['_id']);
     setActiveButton("update");
+    window.scrollTo(0,0);
   };
   const deleteBrand = (index) =>{
     setBrandName(tempBrand[index]['nama']);

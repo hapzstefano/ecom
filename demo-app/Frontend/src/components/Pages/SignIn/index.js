@@ -48,7 +48,7 @@ const SignIn = () => {
         } else if (res.data.status === "admin") {
           encryptStorage.setItem("admin_logged_in", res.data);
           history.push("/");
-        } else {
+        } else if (res.data.status === "manager"){
           encryptStorage.setItem("manager_logged_in", res.data);
           history.push("/");
         }

@@ -28,9 +28,8 @@ body {
 }
 
 .overview-product-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
 }
 
 .overview-product-content {

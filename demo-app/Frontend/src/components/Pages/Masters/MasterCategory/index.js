@@ -56,7 +56,6 @@ const MasterCategory = () => {
     else if(activeButton == "delete"){
       url = "http://localhost:3001/admin/deleteCategory/"+cateId;
     }
-    event.preventDefault();
     axios
       .post(url, {
         name: cateName,
@@ -81,9 +80,11 @@ const MasterCategory = () => {
     console.log(cateName);
   };
   const updateCategory = (index) =>{
+    document.querySelector("#cateName").classList.add("not-empty");
     setCateName(tempCate[index]['nama']);
     setCateId(tempCate[index]['_id']);
     setActiveButton("update");
+    window.scrollTo(0,0);
   };
   const deleteCategory = (index) =>{
     setCateName(tempCate[index]['nama']);

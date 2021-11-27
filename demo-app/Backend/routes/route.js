@@ -74,7 +74,7 @@ router.post('/login',async (req, res) => {
         const pegawai = await Pegawai.findOne({email: email});
         if(pegawai){
             console.log("berhasil login");
-            if(pegawai.jenis == 1){
+            if(pegawai.jenis == 2){
                 return res.status(201).send({customer:customer, status:"admin"});
             }
             else{

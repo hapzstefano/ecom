@@ -88,12 +88,21 @@ const MasterEmployee = () => {
     history.push("/masteremployee");
   };
   const updateEmployee = (index) =>{
+    document.querySelector("#employeeName").classList.add("not-empty");
+    document.querySelector("#employeeEmail").classList.add("not-empty");
+    document.querySelector("#employeePhone").classList.add("not-empty");
+    document.querySelector("#employeePassword").classList.add("not-empty");
     setEmployeeName(tempEmployee[index]['nama']);
     setEmployeeEmail(tempEmployee[index]['email']);
     setEmployeePhone(tempEmployee[index]['notlp']);
     setEmployeePasword(tempEmployee[index]['password']);
+    setStatus("manager");
+    if(tempEmployee[index]['jenis'] == 2){
+      setStatus("employee");
+    }
     setEmployeeId(tempEmployee[index]['_id']);
     setActiveButton("update");
+    window.scrollTo(0,0);
   };
   return (
     <>
@@ -193,6 +202,7 @@ const MasterEmployee = () => {
                     <td>{props.nama}</td>
                     <td>{props.email}</td>
                     <td>{props.notlp}</td>
+                    <td>{props.jenis === 1 ? ("Manager") : ("Employee")}</td>
                     <td style={{ display: "flex", justifyContent: "center" }}>
                       <ButtonRipple text="Update" onClick={(e) => updateEmployee(index)}/>
                       <ButtonRipple text="Delete" />

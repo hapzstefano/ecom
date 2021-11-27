@@ -58,7 +58,6 @@ const MasterMember = () => {
     else if(activeButton == "delete"){
       url = "http://localhost:3001/admin/deleteMember/"+memberId;
     }
-    event.preventDefault();
     axios
       .post(url, {
         nama: memberName,
@@ -87,11 +86,15 @@ const MasterMember = () => {
     history.push("/mastermember");
   };
   const updateMember = (index) =>{
+    document.querySelector("#memberName").classList.add("not-empty");
+    document.querySelector("#memberPoin").classList.add("not-empty");
+    document.querySelector("#memberDisc").classList.add("not-empty");
     setMemberName(tempMember[index]['nama']);
     setMemberDisc(tempMember[index]['potongan']);
     setMemberPoin(tempMember[index]['minimal_poin']);
     setMemberId(tempMember[index]['_id']);
     setActiveButton("update");
+    window.scrollTo(0,0);
   };
   return (
     <>

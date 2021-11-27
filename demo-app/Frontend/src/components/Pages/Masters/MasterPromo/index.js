@@ -91,12 +91,17 @@ const MasterPromo = () => {
     history.push("/masterpromo");
   };
   const updatePromo = (index) =>{
+    document.querySelector("#promoName").classList.add("not-empty");
+    document.querySelector("#promoStart").classList.add("not-empty");
+    document.querySelector("#promoEnd").classList.add("not-empty");
+    document.querySelector("#promoDisc").classList.add("not-empty");
     setPromoName(tempPromo[index]['nama']);
     setPromoStart(Moment(tempPromo[index]['tanggal_awal']).format("YYYY-MM-DD"));
     setPromoEnd(Moment(tempPromo[index]['tanggal_akhir']).format("YYYY-MM-DD"));
     setPromoDisc(tempPromo[index]['potongan']);    
     setPromoId(tempPromo[index]['_id']);
     setActiveButton("update");
+    window.scrollTo(0,0);
   };
   return (
     <>
