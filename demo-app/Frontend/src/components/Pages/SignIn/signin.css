@@ -4,7 +4,6 @@
   align-items: center;
 }
 .content-signin {
-  border: 1px solid lightgray;
   background-color: rgba(0, 0, 0, 0.6);
   width: 400px;
   border-radius: 5px;
