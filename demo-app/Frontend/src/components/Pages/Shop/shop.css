@@ -1,0 +1,122 @@
+.container-shop {
+  min-height: calc(90vh - var(--navbar-height));
+  margin-top: var(--navbar-height);
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-bottom: 3em;
+}
+.container-shop > h1 {
+  margin-top: 1.8em;
+  text-align: center;
+  font-size: 4em;
+  font-weight: bolder;
+}
+.container-select {
+  width: 100%;
+  margin-top: 2em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.select-sort {
+  width: 250px;
+}
+.content-shop {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3em;
+  padding-top: 3em;
+}
+.navigate-shop {
+  width: 20em;
+  height: fit-content;
+  background-color: #f8f8f8;
+  border-radius: 20px;
+  padding: 2em 3em;
+}
+.product-shop {
+  width: 60em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5em;
+}
+.brand-container,
+.cate-container {
+  padding-left: 0.5em;
+  padding-top: 0.5em;
+}
+.brand-wrapper,
+.cate-wrapper {
+  margin: 0.5em 0;
+}
+.brand-wrapper > input[type="checkbox"],
+.cate-wrapper > input[type="checkbox"] {
+  transform: scale(1.5);
+}
+.shop-product-wrapper {
+  width: 210px;
+  height: 300px;
+  border-radius: 8px;
+  box-shadow: 2px 3px 8px #888888;
+}
+.img-shop-product > img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+.button-shop-product {
+  width: 100%;
+  margin-top: 0.2em;
+  position: relative;
+}
+.button-shop-product > button {
+  width: 90%;
+  position: absolute;
+  top: 36px;
+  left: 10px;
+}
+.title-shop-product,
+.price-shop-product {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.price-shop-product {
+  color: #03292e;
+}
+@media screen and (max-width: 1700px) {
+  .product-shop {
+    width: 70%;
+  }
+}
+@media screen and (max-width: 1550px) {
+  .product-shop {
+    width: 60%;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .product-shop {
+    width: 50%;
+    gap: 1em;
+  }
+}
+@media screen and (max-width: 920px) {
+  .navigate-shop {
+    width: 13em;
+  }
+  .product-shop {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 700px) {
+  .container-select {
+    justify-content: center;
+  }
+}
+@media screen and (max-width: 640px) {
+  .product-shop {
+    width: 70%;
+  }
+}

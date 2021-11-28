@@ -189,7 +189,7 @@ const Navbar = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink exact to="/home" activeClassName="navbar-active">
+                <NavLink exact to="/shop" activeClassName="navbar-active">
                   shop now
                 </NavLink>
               </li>

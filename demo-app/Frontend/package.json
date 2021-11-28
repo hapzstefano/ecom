@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "aos": "^2.3.4",
     "axios": "^0.23.0",
     "chokidar": "^3.5.2",
     "encrypt-storage": "^2.2.0",
@@ -21,8 +22,8 @@
     "react-parallax": "^3.3.0",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "react-select": "^5.2.1",
     "react-vanilla-tilt": "^1.0.0",
-    "scrollreveal": "^4.0.9",
     "swiper": "^6.8.4",
     "web-vitals": "^1.1.2"
   },

@@ -26,6 +26,7 @@ import Profile from "./components/Pages/Profile";
 import ForgetPassword from "./components/Pages/ForgetPassword";
 import Cart from "./components/Pages/Cart";
 import Wishlist from "./components/Pages/Wishlist";
+import Shop from "./components/Pages/Shop";
 
 function App() {
   useEffect(() => {
@@ -102,6 +103,11 @@ function App() {
         <Route exact path="/wishlist">
           <Navbar />
           <Wishlist />
+          <Footer />
+        </Route>
+        <Route exact path="/shop">
+          <Navbar />
+          <Shop />
           <Footer />
         </Route>
         <Route exact path="/home">
