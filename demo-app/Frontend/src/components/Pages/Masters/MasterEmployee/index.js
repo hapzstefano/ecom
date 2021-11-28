@@ -57,10 +57,6 @@ const MasterEmployee = () => {
     if(activeButton == "update"){
       url = "http://localhost:3001/admin/updatePegawai/"+employeeId;
     }
-    else if(activeButton == "delete"){
-      url = "http://localhost:3001/admin/deletePegawai/"+employeeId;
-    }
-    event.preventDefault();
     axios
       .post(url, {
         nama: employeeName,
@@ -72,7 +68,12 @@ const MasterEmployee = () => {
       })
       .then((res) => {
         console.log(res.data);
-        history.push("/mastercategory");
+        setEmployeeName("");
+        setEmployeeEmail("");
+        setEmployeePasword("");
+        setEmployeePhone("");
+        setStatus("manager");
+        history.push("/masteremployee");
       })
       .catch((err) => {
         //error
@@ -103,6 +104,27 @@ const MasterEmployee = () => {
     setEmployeeId(tempEmployee[index]['_id']);
     setActiveButton("update");
     window.scrollTo(0,0);
+  };
+  
+  const deleteEmployee = (index) =>{
+    axios
+      .post("http://localhost:3001/admin/deletePegawai/"+tempEmployee[index]['_id'], {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        history.push("/masteremployee");
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
   };
   return (
     <>
@@ -205,7 +227,9 @@ const MasterEmployee = () => {
                     <td>{props.jenis === 1 ? ("Manager") : ("Employee")}</td>
                     <td style={{ display: "flex", justifyContent: "center" }}>
                       <ButtonRipple text="Update" onClick={(e) => updateEmployee(index)}/>
-                      <ButtonRipple text="Delete" />
+                      <form onSubmit={(e) => deleteEmployee(index)}>
+                      <ButtonRipple type="submit" text="Delete" />
+                      </form>
                     </td>
                   </tr>
                 );

@@ -118,7 +118,6 @@ const MasterStock = () => {
       brand: stockBrand,
       category: stockCategory,
     });
-    e.preventDefault();
     axios
       .post(url, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -158,6 +157,26 @@ const MasterStock = () => {
     setStockCategory(tempStock[index]['category']);
     setActiveButton("update");
     window.scrollTo(0,0);
+  };
+  const deleteStock = (index) =>{
+    axios
+      .post("http://localhost:3001/admin/deleteBarang/"+tempStock[index]['_id'], {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        console.log(res.data);
+        history.push("/masterstock");
+      })
+      .catch((err) => {
+        //error
+        if (err.response) {
+          console.log("res error", err.response.data);
+        } else if (err.request) {
+          console.log("req error", err.request.data);
+        } else {
+          console.log("Error", err.message);
+        }
+      });
   };
   return (
     <>
@@ -289,7 +308,9 @@ const MasterStock = () => {
                     <td>{props.brands[0]["nama"]}</td>
                     <td style={{ display: "flex", alignItems: "center", justifyContent:"center", height:"9.7rem" }}>
                       <ButtonRipple text="Update" onClick={(e) => updateStock(index)}/>
-                      <ButtonRipple text="Delete" />
+                      <form onSubmit={(e) => deleteStock(index)}>
+                        <ButtonRipple type="submit" text="Delete" />
+                      </form>
                     </td>
                   </tr>
                 );
