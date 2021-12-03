@@ -11,6 +11,7 @@ const wishlistSchema = new mongoose.Schema({
         ref: "customer",
         required: true
     },
+    status: {type:Number, required: true}
 },{collection : "wishlist"})
 
 module.exports = mongoose.model('wishlist', wishlistSchema)
