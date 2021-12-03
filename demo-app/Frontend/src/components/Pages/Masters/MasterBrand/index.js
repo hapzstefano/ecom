@@ -102,6 +102,7 @@ const MasterBrand = () => {
     setBrandId(tempBrand[index]['_id']);
     setActiveButton("update");
     window.scrollTo(0,0);
+    console.log(activeButton);
   };
   const deleteBrand = (index) =>{
     setBrandId(tempBrand[index]['_id']);
