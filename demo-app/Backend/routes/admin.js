@@ -13,12 +13,13 @@ router.use(cors())
 
 const barangStorage = multer.diskStorage({
     destination: function(req, file, callback) {
-        callback(null, '../uploads/barang');
+        callback(null, '../backend/uploads/barang');
     },
     filename: async function(req, file, callback) {
+        console.log(req.body);
         const extension = file.originalname.split('.')[file.originalname.split('.').length - 1];
         const brand = await BrandModel.findOne({nama: req.body.brand}) 
-        const category = await CategoryModel.findOne({nama: req.body.category})
+        const category = await CategoryModel.findOne({nama: req.body.category});
         const check = await BarangModel.findOne({_id : req.params._id})
         if (check){
             const barang = await BarangModel.findOneAndUpdate({_id: req.params._id},{
@@ -26,6 +27,7 @@ const barangStorage = multer.diskStorage({
                 "harga": req.body.price,
                 "stok": req.body.stok,
                 "status":1,
+                "gambar": "http://localhost:3001/uploads/barang/"+req.params._id+"."+extension,
                 "kategori": mongoose.Types.ObjectId(category._id) ,
                 "brand": mongoose.Types.ObjectId(brand._id)
             })
@@ -36,7 +38,7 @@ const barangStorage = multer.diskStorage({
                 "nama" : req.body.name,
                 "harga": req.body.price,
                 "stok": req.body.stok,
-                "gambar":"../uploads/barang/",
+                "gambar":"/uploads/barang/",
                 "status":1,
                 "kategori": mongoose.Types.ObjectId(category._id) ,
                 "brand": mongoose.Types.ObjectId(brand._id)
@@ -45,33 +47,33 @@ const barangStorage = multer.diskStorage({
             barang.save(async function (err, inserted) {
                 if (err) return console.error(err);
                 _id = inserted._id
-                await BarangModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/barang/"+_id+"."+extension})
+                await BarangModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "http://localhost:3001/uploads/barang/"+_id+"."+extension})
                 callback(null, (_id + '.' + extension));
             });
-            
         }     
     }
 })
 
 const brandStorage = multer.diskStorage({
     destination: function(req, file, callback) {
-        callback(null, '../uploads/brand');
+        callback(null, '../backend/uploads/brand');
     },
     filename: async function(req, file, callback) {
         const extension = file.originalname.split('.')[file.originalname.split('.').length - 1];
-        const check = await BrandModel.findOne({nama: req.body.name}) 
-        console.log(req.body);
+        const check = await BrandModel.findOne({nama: req.body.name});
         if (check){
             const brand = await BrandModel.findOneAndUpdate({_id: req.params._id},{
                 "nama" : req.body.name,
                 "deskripsi": req.body.description,
+                "gambar": "http://localhost:3001/uploads/brand/"+req.params._id+"."+extension,
             })
+            console.log(brand);
             callback(null, (req.params._id + '.' + extension));
         }
         else{
             const brand = new BrandModel({
                 "nama" : req.body.name,
-                "gambar":"../uploads/brand/",
+                "gambar":"/uploads/brand/",
                 "deskripsi":req.body.description,
                 "status":1,
             })
@@ -79,7 +81,7 @@ const brandStorage = multer.diskStorage({
             brand.save(async function (err, inserted) {
                 if (err) return console.error(err);
                 _id = inserted._id
-                await BrandModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "../uploads/brand"+_id+"."+extension})
+                await BrandModel.findOneAndUpdate({_id : new mongoose.Types.ObjectId(_id)},{gambar: "http://localhost:3001/uploads/brand/"+_id+"."+extension})
                 callback(null, (_id + '.' + extension));
             });          
         }     
@@ -96,8 +98,6 @@ const uploadBrand = multer({
 
 
 router.post('/addBarang',uploadBarang.single('image'), async (req,res) => { 
-    console.log(req.body);
-    console.log("file: "+req.file);
     return res.status(200).send("Berhasil Menambah barang")
 })
 
@@ -112,11 +112,11 @@ router.post('/addCategory', async (req,res) => {
     });        
 })
 
-router.post('/addBrand', uploadBrand.single('image'), async (req,res) => { 
+router.post('/addBrand', uploadBrand.single('image') , async (req,res) => { 
     return res.status(200).send("Berhasil Menambah brand")
 })
 
-router.post('/updateBrand/:_id',uploadBrand.single('image'), async (req,res) => {
+router.post('/updateBrand/:_id', uploadBrand.single('image'), async (req,res) => {
     return res.status(200).send("Berhasil Mengubah Brand")
 })
 
@@ -178,6 +178,9 @@ router.get('/getAllBarang', async (req,res)=>{
                   foreignField: "_id",
                   as: "categorys"
               }
+          },
+          {
+            $match:{status:1}
           },
           {
             $sort:{name: 1}

@@ -34,7 +34,7 @@ const MasterStock = () => {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((res) => {
-        console.log("nama brand: " + res.data[0].brands[0]["nama"]);
+        console.log(res.data);
         setTempStock(res.data);
       })
       .catch((err) => {
@@ -103,6 +103,8 @@ const MasterStock = () => {
     document.title = "Master Stock";
   }, []);
   const handleStock = (e) => {
+    console.log("brand: " + stockBrand);
+    console.log("category: " + stockCategory);
     let url=`http://localhost:3001/admin/addBarang`;
     if(activeButton == "update"){
       url = "http://localhost:3001/admin/updateBarang/"+stockId;
@@ -114,9 +116,9 @@ const MasterStock = () => {
       name: stockName,
       price: stockPrice,
       stok: stockQty,
-      image: stockImg,
       brand: stockBrand,
       category: stockCategory,
+      image: stockImg,
     });
     axios
       .post(url, formData, {
@@ -153,8 +155,8 @@ const MasterStock = () => {
     setStockQty(tempStock[index]['stok']);
     setStockImg(tempStock[index]['gambar']);
     setStockId(tempStock[index]['_id']);
-    setStockBrand(tempStock[index]['brand']);
-    setStockCategory(tempStock[index]['category']);
+    setStockBrand(tempStock[index]['brands'][0]["nama"]);
+    setStockCategory(tempStock[index]['categorys'][0]["nama"]);
     setActiveButton("update");
     window.scrollTo(0,0);
   };

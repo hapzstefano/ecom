@@ -95,6 +95,7 @@ const MasterBrand = () => {
   const updateBrand = (index) =>{
     document.querySelector("#brandName").classList.add("not-empty");
     document.querySelector("#brandDesc").classList.add("not-empty");
+    document.querySelector("#brandImg").classList.add("not-empty");
     setBrandName(tempBrand[index]['nama']);
     setBrandDesc(tempBrand[index]['deskripsi']);
     setBrandImg(tempBrand[index]['gambar']);
@@ -189,13 +190,14 @@ const MasterBrand = () => {
                 return (
                   <tr>
                     <td>{props.nama}</td>
-                    <td>{props.gambar}</td>
+                    <td><img src={props.gambar} alt={props.nama} style={{ width:"8rem", aspectRatio:"1/1", objectFit:"contain", }}/></td>
                     <td>{props.deskripsi}</td>
                     <td
                       style={{
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
+                        height:"9.7rem"
                       }}
                     >
                       <ButtonRipple text="Update" onClick={(e) => updateBrand(index)}/>

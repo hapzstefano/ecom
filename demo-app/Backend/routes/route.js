@@ -1,6 +1,8 @@
 'use strict'
 const Customer = require('../models/customer')
 const CategoryModel = require('../models/kategori')
+const CartModel = require('../models/cart')
+const WishlistModel = require('../models/wishlist')
 const Pegawai = require('../models/pegawai')
 const Jenis_member = require('../models/jenis_member')
 const Barang = require('../models/barang')
@@ -10,6 +12,7 @@ const router = express.Router();
 const cors = require("cors");
 const bcryptjs = require("bcryptjs");
 const multer = require("multer");
+const mongoose = require('mongoose');
 router.use(cors())
 
 router.post('/register',async (req, res) => {
@@ -87,6 +90,62 @@ router.post('/login',async (req, res) => {
     }
 })
 
+router.post('/addCart', async (req, res)=>{
+    const checkCart = await CartModel.findOne({barang : new mongoose.Types.ObjectId(req.body.barang)});
+    if(checkCart){
+        const cartUpdate = await CartModel.findOneAndUpdate({_id: checkCart._id},{
+            "barang" : new mongoose.Types.ObjectId(checkCart.barang),
+            "customer" : new mongoose.Types.ObjectId(checkCart.customer),
+            "qty" : req.body.qty
+        })
+        return res.status(200).send("Barang sudah tersedia, Jumlah barang terubah!");
+    }else{
+        const barang = await Barang.findOne({_id: req.body.barang}) 
+        const customer = await Customer.findOne({_id: req.body.customer});
+        const cartInsert = new CartModel({
+            "barang" : new mongoose.Types.ObjectId(barang._id),
+            "customer" : new mongoose.Types.ObjectId(customer._id),
+            "qty" : req.body.qty,
+            "status" : 1
+        })
+        cartInsert.save(async function (err, inserted) {
+            if (err) return console.error(err);
+        });
+
+        return res.status(200).send("Berhasil Menambah Cart")
+    }
+});
+
+router.put('/updateCart/:idCartUpdate', async (req, res)=>{
+    const checkCart = await CartModel.findOne({_id : new mongoose.Types.ObjectId(req.params.idCartUpdate)});
+    if(checkCart){
+        const cartUpdateQty = await CartModel.findOneAndUpdate({_id: checkCart._id},{
+            "qty" : req.body.qty
+        })
+        cartUpdateQty.save(async function (err, inserted) {
+            if (err) return console.error(err);
+        });
+        return res.status(200).send("Jumlah barang terubah!");
+    }else{
+        return res.status(404).send("Cart tidak Ditemukan!")
+    }
+});
+
+router.post('/deleteCart/:idCartDelete', async (req,res) =>{
+    const dataCart = await CartModel.findOne({_id: new mongoose.Types.ObjectId(req.params.idCartDelete)});
+    if(dataCart){
+        await CartModel.findOneAndUpdate(
+            {_id: new mongoose.Types.ObjectId(req.params.idCartDelete)},
+            {
+                "status" : 0
+            }
+        );
+        return res.status(200).send("Berhasil Delete Cart")
+    }else{
+        return res.status(404).send("Cart tidak ditemukan")
+    }
+})
+
 router.post('/addMember', async (req,res) => {
     const jenis_member = new Jenis_member(
         {
@@ -101,6 +160,7 @@ router.post('/addMember', async (req,res) => {
         console.log("Created");
     });
 })
+
 router.post('/addBarang', async (req,res) => {
     const name = req.body.name
     const brand = await Brand.findOne({nama: req.body.brand}) ;
