@@ -5,8 +5,6 @@ import Aos from "aos";
 import Select from "react-select";
 import { EncryptStorage } from "encrypt-storage";
 import { useHistory } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import ButtonRipple from "../../ButtonRipple";
 import "./shop.css";
 import "aos/dist/aos.css";
@@ -20,6 +18,7 @@ const Shop = () => {
   ];
   useEffect(() => {
     Aos.init({ duration: 1000, once: true });
+    document.title = "Shop Now!";
   }, []);
   return (
     <div className="container-shop">
