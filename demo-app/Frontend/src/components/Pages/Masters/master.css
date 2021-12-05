@@ -26,8 +26,4 @@
   .container-master {
     min-height: calc(80vh - var(--navbar-height));
   }
-  .box {
-    width: 250px;
-    margin-top: 7em;
-  }
 }

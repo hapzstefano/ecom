@@ -27,7 +27,7 @@ import ForgetPassword from "./components/Pages/ForgetPassword";
 import Cart from "./components/Pages/Cart";
 import Wishlist from "./components/Pages/Wishlist";
 import Shop from "./components/Pages/Shop";
-
+import Detail from "./components/Pages/DetailStock";
 function App() {
   useEffect(() => {
     gsap.to("body", 0, { css: { visibility: "visible" } });
@@ -108,6 +108,11 @@ function App() {
         <Route exact path="/shop">
           <Navbar />
           <Shop />
+          <Footer />
+        </Route>
+        <Route exact path="/detail">
+          <Navbar />
+          <Detail />
           <Footer />
         </Route>
         <Route exact path="/home">

@@ -31,7 +31,6 @@ p.asterisk {
     min-height: calc(80vh - var(--navbar-height));
   }
   .content-signin {
-    width: 250px;
     margin-top: 7em;
   }
 }

@@ -60,7 +60,7 @@ const brandStorage = multer.diskStorage({
     },
     filename: async function(req, file, callback) {
         const extension = file.originalname.split('.')[file.originalname.split('.').length - 1];
-        const check = await BrandModel.findOne({nama: req.body.name});
+        const check = await BrandModel.findOne({_id : req.params._id});
         if (check){
             const brand = await BrandModel.findOneAndUpdate({_id: req.params._id},{
                 "nama" : req.body.name,
@@ -186,6 +186,23 @@ router.get('/getAllBarang', async (req,res)=>{
             $sort:{name: 1}
           }
         ])
+    return res.status(200).json(barang)
+})
+router.post('/getBarang', async (req,res)=>{
+    console.log(req.body.filter);
+    let findArgs = [];
+    for (let key in req.body.filter) {
+        if(req.body.filter[key]){
+            if(key === "brand"){
+                findArgs[key] = req.body.filter[key];
+            }
+            else{
+
+            }
+        }
+    }
+    const barang = await BarangModel.find();
+
     return res.status(200).json(barang)
 })
 
