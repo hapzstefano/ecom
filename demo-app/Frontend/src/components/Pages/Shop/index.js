@@ -96,7 +96,19 @@ const Shop = () => {
       setFilterStock(filterStock.sort((a, b) => a.harga - b.harga));
     }
     else if(tempSort["value"] == "1"){
-      setFilterStock(tempStock);
+      const sortById =  filterStock.sort((a, b) => {
+        let fa = a._id.toLowerCase(),
+            fb = b._id.toLowerCase();
+    
+        if (fa < fb) {
+            return -1;
+        }
+        if (fa > fb) {
+            return 1;
+        }
+        return 0;
+    });
+    setFilterStock(sortById);
     }
     console.log('Option selected:', tempSort);
     console.log('tempstock:', tempStock);

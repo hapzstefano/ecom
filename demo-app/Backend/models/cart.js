@@ -9,7 +9,18 @@ const cartSchema = new mongoose.Schema({
     customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "customer",
-        required: true
+    },
+    address : {
+        type: 'string'
+    },
+    nama: {
+        type: 'string'
+    },
+    email: {
+        type: 'string'
+    },
+    noTelp: {
+        type: Number
     },
     qty: {type: Number, required: true},
     status: {type: Number, required: true}

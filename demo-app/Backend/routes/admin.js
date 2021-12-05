@@ -5,6 +5,7 @@ const MemberModel = require('../models/jenis_member')
 const PromoModel = require('../models/promo')
 const PegawaiModel = require('../models/pegawai')
 const express = require('express');
+const bcryptjs = require("bcryptjs");
 const router = express.Router();
 const cors = require('cors');
 const multer = require('multer');
@@ -414,6 +415,7 @@ router.get('/getAllPegawai', async (req,res)=>{
 })
 router.post('/addPegawai',async (req,res) => {
     const dataPegawai = await PegawaiModel.findOne({nama: req.body.nama});
+    const hashPassword = await bcryptjs.hash(req.body.password,10);
     console.log(req.body);
     if(dataPegawai){
         return res.status(400).send("Nama tidak boleh kembar")
@@ -425,7 +427,7 @@ router.post('/addPegawai',async (req,res) => {
         const newPegawai = new PegawaiModel({
             "nama" : req.body.nama,
             "email": req.body.email,
-            "password": req.body.password,
+            "password": hashPassword,
             "notlp": req.body.notlp,
             "jenis": jenis,
             "status": 1

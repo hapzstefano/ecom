@@ -76,13 +76,15 @@ router.post('/login',async (req, res) => {
         //login buat admin, untuk admin jenis = 2
         const pegawai = await Pegawai.findOne({email: email});
         if(pegawai){
-            console.log("berhasil login");
-            if(pegawai.jenis == 2){
-                return res.status(201).send({customer:customer, status:"admin"});
-            }
-            else{
-                return res.status(201).send({customer:customer, status:"manager"});
-            }
+            if (bcryptjs.compareSync(inputPassword,pegawai['password'])){
+                console.log("berhasil login");
+                if(pegawai.jenis == 2){
+                    return res.status(201).send({customer:customer, status:"admin"});
+                }
+                else{
+                    return res.status(201).send({customer:customer, status:"manager"});
+                }
+            }      
         }
         else{
             console.log("gagal login");
@@ -92,27 +94,30 @@ router.post('/login',async (req, res) => {
 
 router.post('/addCart', async (req, res)=>{
     const checkCart = await CartModel.findOne({barang : new mongoose.Types.ObjectId(req.body.barang)});
-    if(checkCart){
-        const cartUpdate = await CartModel.findOneAndUpdate({_id: checkCart._id},{
-            "barang" : new mongoose.Types.ObjectId(checkCart.barang),
-            "customer" : new mongoose.Types.ObjectId(checkCart.customer),
-            "qty" : req.body.qty
-        })
-        return res.status(200).send("Barang sudah tersedia, Jumlah barang terubah!");
-    }else{
-        const barang = await Barang.findOne({_id: req.body.barang}) 
-        const customer = await Customer.findOne({_id: req.body.customer});
-        const cartInsert = new CartModel({
-            "barang" : new mongoose.Types.ObjectId(barang._id),
-            "customer" : new mongoose.Types.ObjectId(customer._id),
-            "qty" : req.body.qty,
-            "status" : 1
-        })
-        cartInsert.save(async function (err, inserted) {
-            if (err) return console.error(err);
-        });
-
-        return res.status(200).send("Berhasil Menambah Cart")
+    if (req.body.customer)
+    {
+        if(checkCart){
+            const cartUpdate = await CartModel.findOneAndUpdate({_id: checkCart._id},{
+                "barang" : new mongoose.Types.ObjectId(checkCart.barang),
+                "customer" : new mongoose.Types.ObjectId(checkCart.customer),
+                "qty" : req.body.qty
+            })
+            return res.status(200).send("Barang sudah tersedia, Jumlah barang terubah!");
+        }else{
+            const barang = await Barang.findOne({_id: req.body.barang}) 
+            const customer = await Customer.findOne({_id: req.body.customer});
+            const cartInsert = new CartModel({
+                "barang" : new mongoose.Types.ObjectId(barang._id),
+                "customer" : new mongoose.Types.ObjectId(customer._id),
+                "qty" : req.body.qty,
+                "status" : 1
+            })
+            cartInsert.save(async function (err, inserted) {
+                if (err) return console.error(err);
+            });
+    
+            return res.status(200).send("Berhasil Menambah Cart")
+        }
     }
 });
 
