@@ -3,6 +3,8 @@
 # dependencies
 Frontend/node_modules
 Backend/node_modules
+Frontend/package-lock.json
+Backend/package-lock.json
 .idea
 /.pnp
 .pnp.js
